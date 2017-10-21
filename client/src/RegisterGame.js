@@ -23,23 +23,13 @@ export default class RegisterGame extends PureComponent {
         <form>
           <fieldset>
             <label htmlFor="playerASelect">Player A</label>
-            <select id="playerASelect" value={this.state.playerAName} onChange={this.handleNameChanged}>
-              <option value="" disabled selected>Select player</option>
-              {this.props.players.map(player =>
-                <option key={player} value={player}>{player}</option>
-              )}
-            </select>
+            {this.renderPlayerSelect('playerASelect', this.state.playerAName)}
 
             <label htmlFor="playerAField">Player A score</label>
             <input placeholder="1" id="playerAField" type="number" value={this.state.playerAScore} onChange={this.handleScoreChanged} />
 
             <label htmlFor="playerBSelect">Player B</label>
-            <select id="playerBSelect" value={this.state.playerBName} onChange={this.handleNameChanged}>
-              <option value="" disabled selected>Select player</option>
-              {this.props.players.map(player =>
-                <option key={player} value={player}>{player}</option>
-              )}
-            </select>
+            {this.renderPlayerSelect('playerBSelect', this.state.playerBName)}
 
             <label htmlFor="playerBField">Player B score</label>
             <input placeholder="1" id="playerBField" type="number" value={this.state.playerBScore} onChange={this.handleScoreChanged} />
@@ -48,6 +38,17 @@ export default class RegisterGame extends PureComponent {
           </fieldset>
         </form>
       </section>
+    );
+  }
+
+  renderPlayerSelect(id, value) {
+    return (
+      <select id={id} value={value} onChange={this.handleNameChanged}>
+        <option value="" disabled selected>Select player</option>
+        {this.props.players.map(player =>
+          <option key={player} value={player}>{player}</option>
+        )}
+      </select>
     );
   }
 
