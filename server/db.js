@@ -6,13 +6,16 @@ class Database {
   }
 
   addPlayer(name) {
-    const db = new sqlite3.Database(this.databaseName);
+    return new Promise((resolve, reject) => {
+      const db = new sqlite3.Database(this.databaseName);
 
-    const statement = db.prepare('INSERT INTO player (name) VALUES (?)');
-    statement.run(name);
-    statement.finalize();
+      const statement = db
+        .prepare('INSERT INTO player (name) VALUES (?)')
+        .run(name, error => error ? reject(error) : resolve());
+      statement.finalize();
 
-    db.close();
+      db.close();
+    });
   }
 }
 
