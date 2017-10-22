@@ -17,6 +17,19 @@ class Database {
       db.close();
     });
   }
+
+  getPlayers() {
+    return new Promise((resolve, reject) => {
+      const db = new sqlite3.Database(this.databaseName);
+
+      db.all(
+        'SELECT id, name FROM player ORDER BY name',
+        (error, rows) => error ? reject(error) : resolve(rows)
+      );
+
+      db.close();
+    });
+  }
 }
 
 module.exports = Database;
