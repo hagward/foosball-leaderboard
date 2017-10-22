@@ -22,18 +22,26 @@ export default class RegisterGame extends PureComponent {
         <h2>Register game</h2>
         <form>
           <fieldset>
-            <label htmlFor="playerASelect">Player A</label>
-            {this.renderPlayerSelect('playerASelect', this.state.playerAName)}
-
-            <label htmlFor="playerAField">Player A score</label>
-            <input placeholder="1" id="playerAField" type="number" value={this.state.playerAScore} onChange={this.handleScoreChanged} />
-
-            <label htmlFor="playerBSelect">Player B</label>
-            {this.renderPlayerSelect('playerBSelect', this.state.playerBName)}
-
-            <label htmlFor="playerBField">Player B score</label>
-            <input placeholder="1" id="playerBField" type="number" value={this.state.playerBScore} onChange={this.handleScoreChanged} />
-
+            <div class="row">
+              <div class="column">
+                <label htmlFor="playerASelect">Player A</label>
+                {this.renderPlayerSelect('playerASelect', this.state.playerAName)}
+              </div>
+              <div class="column">
+                <label htmlFor="playerAField">Player A score</label>
+                <input placeholder="1" id="playerAField" type="number" value={this.state.playerAScore} onChange={this.handleScoreChanged} />
+              </div>
+            </div>
+            <div class="row">
+              <div class="column">
+                <label htmlFor="playerBSelect">Player B</label>
+                {this.renderPlayerSelect('playerBSelect', this.state.playerBName)}
+              </div>
+              <div class="column">
+                <label htmlFor="playerBField">Player B score</label>
+                <input placeholder="1" id="playerBField" type="number" value={this.state.playerBScore} onChange={this.handleScoreChanged} />
+              </div>
+            </div>
             <input className="button-primary" value="Register" type="submit" onClick={this.registerGame} />
           </fieldset>
         </form>
