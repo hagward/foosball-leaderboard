@@ -8,15 +8,17 @@ export default class Leaderboard extends PureComponent {
         <table>
           <thead>
             <tr>
+              <th>Rank</th>
               <th>Name</th>
               <th>Rating</th>
             </tr>
           </thead>
           <tbody>
-            {this.props.leaderboard.map(record =>
-              <tr key={record.name}>
-                <td>{record.name}</td>
-                <td>{record.rating}</td>
+            {this.props.leaderboard.map((player, index) =>
+              <tr key={player.name}>
+                <td>{index + 1}</td>
+                <td>{player.name}</td>
+                <td>{player.rating}</td>
               </tr>
             )}
           </tbody>
