@@ -48,7 +48,7 @@ app.post('/api/game', (req, res) => {
 
   const [newRatingA, newRatingB] = elo.newRatings(a.score, b.score, ratings[a.name], ratings[b.name]);
 
-  if (!ratings[a.name] || !ratings[b.name] || !newRatingA || !newRatingB) {
+  if (!ratings[a.name] || !ratings[b.name] || !newRatingA || !newRatingB || a.name === b.name) {
     res.sendStatus(400);
     return;
   }
