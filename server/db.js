@@ -41,7 +41,20 @@ class Database {
         LIMIT (?)
         `,
         n,
-        (error, rows) => error ? reject(error) : resolve (rows)
+        (error, rows) => error ? reject(error) : resolve(rows)
+      )
+    );
+  }
+
+  getLeaderboard() {
+    return this.query((db, resolve, reject) =>
+      db.all(
+        `
+        SELECT id, name, rating
+        FROM player
+        ORDER BY rating DESC
+        `,
+        (error, rows) => error ? reject(error) : resolve(rows)
       )
     );
   }
