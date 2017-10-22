@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const elo = require('./elo');
 
 const leaderboard = [];
-const persons = {};
+const ratings = {};
 const players = [];
 const games = [];
 
@@ -28,16 +28,16 @@ app.get('/api/games', (req, res) => {
   res.send({ games: games });
 });
 
-app.post('/api/person', (req, res) => {
-  const person = addPerson(req.body.name);
+app.post('/api/player', (req, res) => {
+  const player = addPlayer(req.body.name);
 
-  if (person) {
-    res.send(person);
+  if (player) {
+    res.send(player);
   } else {
     res.sendStatus(400);
   }
 
-  console.log(persons);
+  console.log(ratings);
   console.log(leaderboard);
   console.log('---');
 });
@@ -46,9 +46,9 @@ app.post('/api/game', (req, res) => {
   const a = req.body.a;
   const b = req.body.b;
 
-  const [newRatingA, newRatingB] = elo.newRatings(a.score, b.score, persons[a.name], persons[b.name]);
+  const [newRatingA, newRatingB] = elo.newRatings(a.score, b.score, ratings[a.name], ratings[b.name]);
 
-  if (!persons[a.name] || !persons[b.name] || !newRatingA || !newRatingB) {
+  if (!ratings[a.name] || !ratings[b.name] || !newRatingA || !newRatingB) {
     res.sendStatus(400);
     return;
   }
@@ -71,29 +71,29 @@ app.post('/api/game', (req, res) => {
   });
 });
 
-function addPerson(name) {
-  if (persons[name]) {
+function addPlayer(name) {
+  if (ratings[name]) {
     return undefined;
   }
 
   const initialRating = 1500;
-  persons[name] = initialRating;
+  ratings[name] = initialRating;
   players.push(name);
   players.sort();
 
-  const person = { name: name, rating: initialRating };
-  leaderboard.push(person);
+  const player = { name: name, rating: initialRating };
+  leaderboard.push(player);
   sortLeaderboard();
 
-  return person;
+  return player;
 }
 
 function updateRating(name, rating) {
-  if (persons[name]) {
-    persons[name] = rating;
+  if (ratings[name]) {
+    ratings[name] = rating;
   }
 
-  const record = leaderboard.find(person => person.name === name);
+  const record = leaderboard.find(player => player.name === name);
   if (record) {
     record.rating = rating;
   }
