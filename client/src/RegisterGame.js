@@ -52,7 +52,7 @@ export default class RegisterGame extends PureComponent {
   renderPlayerSelect(id, value) {
     return (
       <select id={id} value={value} onChange={this.handleNameChanged}>
-        <option value="" disabled selected>Select player</option>
+        <option value="" disabled>Select player</option>
         {this.props.players.map(player =>
           <option key={player} value={player}>{player}</option>
         )}
