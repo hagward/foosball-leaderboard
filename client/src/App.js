@@ -59,8 +59,14 @@ export default class App extends PureComponent {
   render() {
     return (
       <div className="container">
-        <Leaderboard leaderboard={this.state.leaderboard} />
-        <Games games={this.state.games} />
+        <div className="row">
+          <div className="column">
+            <Leaderboard leaderboard={this.state.leaderboard} />
+          </div>
+          <div className="column">
+            <Games games={this.state.games} />
+          </div>
+        </div>
         <RegisterGame players={this.state.players} callback={this.handleGameRegistered} />
         <AddPlayer callback={this.fetchAll} />
       </div>
