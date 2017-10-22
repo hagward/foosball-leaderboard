@@ -6,6 +6,7 @@ const elo = require('./elo');
 const leaderboard = [];
 const persons = {};
 const players = [];
+const games = [];
 
 app.use(bodyParser.json());
 
@@ -21,6 +22,10 @@ app.get('/api/leaderboard', (req, res) => {
 
 app.get('/api/players', (req, res) => {
   res.send({ players: players });
+});
+
+app.get('/api/games', (req, res) => {
+  res.send({ games: games });
 });
 
 app.post('/api/person', (req, res) => {
@@ -51,6 +56,8 @@ app.post('/api/game', (req, res) => {
   updateRating(a.name, newRatingA);
   updateRating(b.name, newRatingB);
   sortLeaderboard();
+
+  games.unshift(req.body);
 
   res.send({
     a: {
