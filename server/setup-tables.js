@@ -9,14 +9,14 @@ db.serialize(() => {
     CREATE TABLE player (
       id INTEGER PRIMARY KEY NOT NULL,
       name TEXT UNIQUE NOT NULL,
-      rating INTEGER NOT NULL
+      rating INTEGER NOT NULL DEFAULT 1500
     )
   `);
 
   db.run(`
     CREATE TABLE game (
       id INTEGER PRIMARY KEY NOT NULL,
-      created_datetime INTEGER NOT NULL,
+      created_datetime INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP,
       player_a_id INTEGER NOT NULL,
       player_b_id INTEGER NOT NULL,
       player_a_score INTEGER NOT NULL,
