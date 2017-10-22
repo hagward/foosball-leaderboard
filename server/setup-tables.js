@@ -16,7 +16,7 @@ db.serialize(() => {
   db.run(`
     CREATE TABLE game (
       id INTEGER PRIMARY KEY NOT NULL,
-      created_datetime INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      created_timestamp INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP,
       player_a_id INTEGER NOT NULL,
       player_b_id INTEGER NOT NULL,
       player_a_score INTEGER NOT NULL,
