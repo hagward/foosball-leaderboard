@@ -14,12 +14,60 @@ class Database {
     });
   }
 
+  getTwoRatings(playerId1, playerId2) {
+    return this.query((db, resolve, reject) =>
+      db.get(
+        `
+        SELECT a.rating AS ratingA, b.rating AS ratingB
+        FROM player AS a
+        LEFT JOIN player AS b
+        WHERE a.id = (?) AND b.id = (?)
+        `,
+        playerId1, playerId2,
+        (error, row) => error ? reject(error) : resolve(row)
+      )
+    );
+  }
+
   getPlayers() {
     return this.query((db, resolve, reject) =>
       db.all(
         'SELECT id, name FROM player ORDER BY name',
         (error, rows) => error ? reject(error) : resolve(rows)
       )
+    );
+  }
+
+  addGame(playerA, playerB) {
+    return this.queries(
+      (db, resolve, reject) => {
+        const statement = db
+          .prepare(
+            `
+            INSERT INTO game (
+              player_a_id, player_b_id, player_a_score, player_b_score
+            )
+            VALUES (?, ?, ?, ?)
+            `
+          )
+          .run(
+            playerA.id, playerB.id, playerA.score, playerB.score,
+            error => error ? reject(error) : resolve()
+          );
+        statement.finalize();
+      },
+      (db, resolve, reject) => {
+        const statement = db
+          .prepare('UPDATE player SET rating = (?) WHERE id = (?)')
+          .run(playerA.newRating, playerA.id, error => error ? reject(error) : resolve());
+        statement.finalize();
+      },
+      (db, resolve, reject) => {
+        const statement = db
+          .prepare('UPDATE player SET rating = (?) WHERE id = (?)')
+          .run(playerB.newRating, playerB.id, error => error ? reject(error) : resolve());
+        statement.finalize();
+      }
     );
   }
 
@@ -65,6 +113,18 @@ class Database {
       callback(db, resolve, reject);
       db.close();
     });
+  }
+
+  queries(...callbacks) {
+    const db = new sqlite3.Database(this.databaseName);
+    const promises = callbacks.map(callback =>
+      new Promise((resolve, reject) => callback(db, resolve, reject)));
+    return Promise
+      .all(promises)
+      .then(() => {
+        db.close();
+        return Promise.resolve();
+      });
   }
 }
 

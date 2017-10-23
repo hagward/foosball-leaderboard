@@ -1,12 +1,10 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const Database = require('./db');
 const elo = require('./elo');
 
-const leaderboard = [];
-const ratings = {};
-const players = [];
-const games = [];
+const db = new Database('foosball.db');
 
 app.use(bodyParser.json());
 
@@ -17,92 +15,71 @@ app.use((req, res, next) => {
 });
 
 app.get('/api/leaderboard', (req, res) => {
-  res.send({ leaderboard: leaderboard });
+  db.getLeaderboard()
+    .then(leaderboard => res.send(leaderboard))
+    .catch(error => {
+      console.log(error);
+      res.sendStatus(400);
+    });
 });
 
 app.get('/api/players', (req, res) => {
-  res.send({ players: players });
+  db.getPlayers()
+    .then(players => res.send(players))
+    .catch(error => {
+      console.log(error);
+      res.sendStatus(400);
+    });
 });
 
 app.get('/api/games', (req, res) => {
-  res.send({ games: games });
+  db.getLatestGames(10)
+    .then(games => res.send(games))
+    .catch(error => {
+      console.log(error);
+      res.sendStatus(400);
+    });
 });
 
 app.post('/api/player', (req, res) => {
-  const player = addPlayer(req.body.name);
-
-  if (player) {
-    res.send(player);
-  } else {
-    res.sendStatus(400);
-  }
-
-  console.log(ratings);
-  console.log(leaderboard);
-  console.log('---');
+  db.addPlayer(req.body.name)
+    .then(() => res.sendStatus(200))
+    .catch(error => {
+      console.log(error);
+      res.sendStatus(400);
+    });
 });
 
 app.post('/api/game', (req, res) => {
   const a = req.body.a;
   const b = req.body.b;
 
-  const [newRatingA, newRatingB] = elo.newRatings(a.score, b.score, ratings[a.name], ratings[b.name]);
+  db.getTwoRatings(a.id, b.id)
+    .then(row => {
+      const [newRatingA, newRatingB] = elo.newRatings(a.score, b.score, row.ratingA, row.ratingB);
 
-  if (!ratings[a.name] || !ratings[b.name] || !newRatingA || !newRatingB || a.name === b.name) {
-    res.sendStatus(400);
-    return;
-  }
-
-  updateRating(a.name, newRatingA);
-  updateRating(b.name, newRatingB);
-  sortLeaderboard();
-
-  games.unshift(req.body);
-
-  res.send({
-    a: {
-      name: a.name,
-      rating: newRatingA
-    },
-    b: {
-      name: b.name,
-      rating: newRatingB
-    }
-  });
+      if (!newRatingA || !newRatingB || a.id === b.id) {
+        return Promise.reject();
+      } else {
+        return db.addGame({
+            id: a.id,
+            score: a.score,
+            newRating: newRatingA
+          }, {
+            id: b.id,
+            score: b.score,
+            newRating: newRatingB
+          }
+        );
+      }
+    })
+    .then(() => res.sendStatus(200))
+    .catch(error => {
+      console.log(error);
+      res.sendStatus(400);
+    });
 });
 
-function addPlayer(name) {
-  if (ratings[name]) {
-    return undefined;
-  }
-
-  const initialRating = 1500;
-  ratings[name] = initialRating;
-  players.push(name);
-  players.sort();
-
-  const player = { name: name, rating: initialRating };
-  leaderboard.push(player);
-  sortLeaderboard();
-
-  return player;
-}
-
-function updateRating(name, rating) {
-  if (ratings[name]) {
-    ratings[name] = rating;
-  }
-
-  const record = leaderboard.find(player => player.name === name);
-  if (record) {
-    record.rating = rating;
-  }
-}
-
-function sortLeaderboard() {
-  leaderboard.sort((a, b) => b.rating - a.rating);
-}
-
 app.listen(3001, () => {
-  console.log('Example app listening on port 3001!')
+  console.log('foosball-server listening on port 3001!')
 });
