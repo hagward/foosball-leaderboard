@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import moment from 'moment';
 
 export default class Games extends PureComponent {
   render() {
@@ -11,18 +12,21 @@ export default class Games extends PureComponent {
               <th>Player A</th>
               <th>Player B</th>
               <th>Result</th>
-              <th>Date</th>
+              <th>When</th>
             </tr>
           </thead>
           <tbody>
-            {this.props.games.map(game =>
-              <tr key={game.id}>
-                <td>{game.player_a_name}</td>
-                <td>{game.player_b_name}</td>
-                <td>{game.player_a_score}:{game.player_b_score}</td>
-                <td>{game.created_timestamp}</td>
-              </tr>
-            )}
+            {this.props.games.map(game => {
+              const date = moment.utc(game.created_timestamp);
+              return (
+                <tr key={game.id}>
+                  <td>{game.player_a_name}</td>
+                  <td>{game.player_b_name}</td>
+                  <td>{game.player_a_score}:{game.player_b_score}</td>
+                  <td title={date.local().format('LTS')}>{date.fromNow()}</td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
       </section>
