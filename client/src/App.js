@@ -36,7 +36,7 @@ export default class App extends PureComponent {
       method: 'GET'
     })
     .then(response => response.json())
-    .then(json => this.setState(json));
+    .then(games => this.setState({ games: games }));
   }
 
   fetchLeaderboard() {
@@ -44,16 +44,15 @@ export default class App extends PureComponent {
       method: 'GET'
     })
     .then(response => response.json())
-    .then(json => this.setState(json));
+    .then(leaderboard => this.setState({ leaderboard: leaderboard }));
   }
-
 
   fetchPlayers() {
     fetch('http://localhost:3001/api/players', {
       method: 'GET'
     })
     .then(response => response.json())
-    .then(json => this.setState(json));
+    .then(players => this.setState({ players: players }));
   }
 
   render() {

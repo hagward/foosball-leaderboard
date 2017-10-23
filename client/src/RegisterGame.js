@@ -5,8 +5,8 @@ export default class RegisterGame extends PureComponent {
     super(props);
 
     this.state = {
-      playerAName: '',
-      playerBName: '',
+      playerAId: '',
+      playerBId: '',
       playerAScore: '',
       playerBScore: ''
     };
@@ -25,7 +25,7 @@ export default class RegisterGame extends PureComponent {
             <div className="row">
               <div className="column">
                 <label htmlFor="playerASelect">Player A</label>
-                {this.renderPlayerSelect('playerASelect', this.state.playerAName)}
+                {this.renderPlayerSelect('playerASelect', this.state.playerAId)}
               </div>
               <div className="column">
                 <label htmlFor="playerAField">Player A score</label>
@@ -35,7 +35,7 @@ export default class RegisterGame extends PureComponent {
             <div className="row">
               <div className="column">
                 <label htmlFor="playerBSelect">Player B</label>
-                {this.renderPlayerSelect('playerBSelect', this.state.playerBName)}
+                {this.renderPlayerSelect('playerBSelect', this.state.playerBId)}
               </div>
               <div className="column">
                 <label htmlFor="playerBField">Player B score</label>
@@ -54,7 +54,7 @@ export default class RegisterGame extends PureComponent {
       <select id={id} value={value} onChange={this.handleNameChanged}>
         <option value="" disabled>Select player</option>
         {this.props.players.map(player =>
-          <option key={player} value={player}>{player}</option>
+          <option key={player.id} value={player.id}>{player.name}</option>
         )}
       </select>
     );
@@ -63,11 +63,11 @@ export default class RegisterGame extends PureComponent {
   handleNameChanged(event) {
     if (event.target.id === 'playerASelect') {
       this.setState({
-        playerAName: event.target.value
+        playerAId: event.target.value
       });
     } else {
       this.setState({
-        playerBName: event.target.value
+        playerBId: event.target.value
       });
     }
   }
@@ -92,11 +92,11 @@ export default class RegisterGame extends PureComponent {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         a: {
-          name: this.state.playerAName,
+          id: this.state.playerAId,
           score: this.state.playerAScore
         },
         b: {
-          name: this.state.playerBName,
+          id: this.state.playerBId,
           score: this.state.playerBScore
         }
       })

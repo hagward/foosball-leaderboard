@@ -15,7 +15,7 @@ export default class Leaderboard extends PureComponent {
           </thead>
           <tbody>
             {this.props.leaderboard.map((player, index) =>
-              <tr key={player.name}>
+              <tr key={player.id}>
                 <td>{index + 1}</td>
                 <td>{player.name}</td>
                 <td>{player.rating}</td>
