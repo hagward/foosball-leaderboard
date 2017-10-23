@@ -14,6 +14,8 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/', express.static('../client/build'));
+
 app.get('/api/leaderboard', (req, res) => {
   db.getLeaderboard()
     .then(leaderboard => res.send(leaderboard))
