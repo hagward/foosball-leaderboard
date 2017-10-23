@@ -19,19 +19,19 @@ describe('pointsChange', () => {
   });
 });
 
-describe('newRating', () => {
+describe('newRatings', () => {
   test('Team B (500) vs. Team C (480) - 3:1', () => {
-    expect(elo.newRating(3, 1, 500, 480)).toBe(514);
-    expect(elo.newRating(1, 3, 480, 500)).toBe(466);
+    expect(elo.newRatings(3, 1, 500, 480)).toEqual([514, 466]);
+    expect(elo.newRatings(1, 3, 480, 500)).toEqual([466, 514]);
   });
 
   test('Team B (500) vs. Team C (480) - 1:3', () => {
-    expect(elo.newRating(1, 3, 500, 480)).toBe(484);
-    expect(elo.newRating(3, 1, 480, 500)).toBe(496);
+    expect(elo.newRatings(1, 3, 500, 480)).toEqual([484, 496]);
+    expect(elo.newRatings(3, 1, 480, 500)).toEqual([496, 484]);
   });
 
   test('Team B (500) vs. Team C (480) - 2:2', () => {
-    expect(elo.newRating(2, 2, 500, 480)).toBe(499);
-    expect(elo.newRating(2, 2, 480, 500)).toBe(481);
+    expect(elo.newRatings(2, 2, 500, 480)).toEqual([499, 481]);
+    expect(elo.newRatings(2, 2, 480, 500)).toEqual([481, 499]);
   });
 });
