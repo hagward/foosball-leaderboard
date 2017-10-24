@@ -34,7 +34,7 @@ export default class AddPlayer extends PureComponent {
   addPlayer(event) {
     event.preventDefault();
 
-    fetch('http://localhost:3001/api/player', {
+    fetch('/api/player', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

@@ -32,7 +32,7 @@ export default class App extends PureComponent {
   }
 
   fetchGames() {
-    fetch('http://localhost:3001/api/games', {
+    fetch('/api/games', {
       method: 'GET'
     })
     .then(response => response.json())
@@ -40,7 +40,7 @@ export default class App extends PureComponent {
   }
 
   fetchLeaderboard() {
-    fetch('http://localhost:3001/api/leaderboard', {
+    fetch('/api/leaderboard', {
       method: 'GET'
     })
     .then(response => response.json())
@@ -48,7 +48,7 @@ export default class App extends PureComponent {
   }
 
   fetchPlayers() {
-    fetch('http://localhost:3001/api/players', {
+    fetch('/api/players', {
       method: 'GET'
     })
     .then(response => response.json())
