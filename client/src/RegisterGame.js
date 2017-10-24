@@ -28,14 +28,14 @@ export default class RegisterGame extends PureComponent {
                 {this.renderPlayerSelect('playerASelect', this.state.playerAId)}
               </div>
               <div className="column">
-                <label htmlFor="playerAField">Player A score</label>
-                <input placeholder="1" id="playerAField" type="number" value={this.state.playerAScore} onChange={this.handleScoreChanged} />
+                <label htmlFor="playerBSelect">Player B</label>
+                {this.renderPlayerSelect('playerBSelect', this.state.playerBId)}
               </div>
             </div>
             <div className="row">
               <div className="column">
-                <label htmlFor="playerBSelect">Player B</label>
-                {this.renderPlayerSelect('playerBSelect', this.state.playerBId)}
+                <label htmlFor="playerAField">Player A score</label>
+                <input placeholder="1" id="playerAField" type="number" value={this.state.playerAScore} onChange={this.handleScoreChanged} />
               </div>
               <div className="column">
                 <label htmlFor="playerBField">Player B score</label>
