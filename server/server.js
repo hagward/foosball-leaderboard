@@ -58,7 +58,7 @@ app.post('/api/game', (req, res) => {
 
   db.getTwoRatings(a.id, b.id)
     .then(row => {
-      const [newRatingA, newRatingB] = elo.newRatings(a.score, b.score, row.ratingA, row.ratingB);
+      const [newRatingA, newRatingB] = elo.getNewRatings(row.ratingA, row.ratingB, a.score, b.score);
 
       if (!newRatingA || !newRatingB || a.id === b.id) {
         return Promise.reject();
