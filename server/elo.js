@@ -1,36 +1,22 @@
+/**
+ * Taken from https://math.stackexchange.com/questions/1723020/accounting-for-uncertainty-in-an-elo-rating-system-for-foosball
+ */
 class Elo {
-  newRatings(score, otherScore, rating, otherRating) {
-    const p = Math.round(this.pointsChange(score - otherScore, rating - otherRating));
-    return [rating + p, otherRating - p];
+  getNewRatings(rating, opponentRating, score, opponentScore) {
+    const p = Math.round(this.pointsChange(rating, opponentRating, score, opponentScore));
+    return [rating + p, opponentRating - p];
   }
 
-  pointsChange(goalDifference, ratingDifference) {
-    const k = this.k();
-    const result = this.result(goalDifference);
-    const expected = this.expected(ratingDifference);
-    return this.p(k, result, expected);
+  pointsChange(rating, opponentRating, score, opponentScore) {
+    return 10 * (score - opponentScore - this.expectedMatch(rating, opponentRating));
   }
 
-  k() {
-    return 50;
+  expectedMatch(rating, opponentRating) {
+    return 20 * (this.expectedGoal(rating, opponentRating) - 1/2);
   }
 
-  result(goalDifference) {
-    if (goalDifference > 0) {
-      return 1;
-    } else if (goalDifference < 0) {
-      return 0;
-    } else {
-      return .5;
-    }
-  }
-
-  expected(ratingDifference) {
-    return 1/(Math.pow(10, -ratingDifference/1000) + 1);
-  }
-
-  p(k, result, expected) {
-    return k * (result - expected);
+  expectedGoal(rating, opponentRating) {
+    return 1/(1 + Math.pow(10, (opponentRating - rating)/800));
   }
 }
 
