@@ -107,6 +107,26 @@ class Database {
     );
   }
 
+  getPlayerStatistics(playerId) {
+    return this.query((db, resolve, reject) =>
+      db.get(
+        `
+        SELECT COUNT(
+          CASE WHEN
+            (player_a_id = ? AND player_a_score > player_b_score) OR
+            (player_b_id = ? AND player_b_score > player_a_score)
+          THEN 1 ELSE NULL
+          END
+        )/COUNT(id) AS win_ratio
+        FROM game
+        WHERE player_a_id = ? OR player_b_id = ?
+        `,
+        playerId, playerId, playerId, playerId,
+        (error, row) => error ? reject(error) : resolve(row)
+      )
+    );
+  }
+
   query(callback) {
     return new Promise((resolve, reject) => {
       const db = new sqlite3.Database(this.databaseName);
