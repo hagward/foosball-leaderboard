@@ -43,6 +43,15 @@ app.get('/api/games', (req, res) => {
     });
 });
 
+app.get('/api/player', (req, res) => {
+  db.getPlayerStatistics(req.body.playerId)
+    .then(statistics => res.send(statistics))
+    .catch(error => {
+      console.log(error);
+      res.sendStatus(400);
+    });
+});
+
 app.post('/api/player', (req, res) => {
   db.addPlayer(req.body.name)
     .then(() => res.sendStatus(200))
