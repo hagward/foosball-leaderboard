@@ -35,11 +35,11 @@ export default class RegisterGame extends PureComponent {
             <div className="row">
               <div className="column">
                 <label htmlFor="playerAField">Player A score</label>
-                <input placeholder="1" id="playerAField" type="number" value={this.state.playerAScore} onChange={this.handleScoreChanged} />
+                <input id="playerAField" type="number" placeholder="0-10" min="0" max="10" value={this.state.playerAScore} onChange={this.handleScoreChanged} />
               </div>
               <div className="column">
                 <label htmlFor="playerBField">Player B score</label>
-                <input placeholder="1" id="playerBField" type="number" value={this.state.playerBScore} onChange={this.handleScoreChanged} />
+                <input id="playerBField" type="number" placeholder="0-10" min="0" max="10" value={this.state.playerBScore} onChange={this.handleScoreChanged} />
               </div>
             </div>
             <input className="button-primary" value="Register" type="submit" onClick={this.registerGame} />
