@@ -117,7 +117,7 @@ class Database {
             (player_b_id = ? AND player_b_score > player_a_score)
           THEN 1 ELSE NULL
           END
-        )/COUNT(id) AS win_ratio
+        )*1.0/COUNT(id) AS win_ratio
         FROM game
         WHERE player_a_id = ? OR player_b_id = ?
         `,
