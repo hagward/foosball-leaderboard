@@ -19,12 +19,12 @@ db.serialize(() => {
   `);
 
   db.run(`
-    CREATE TABLE IF NOT EXISTS player_team (
-      player_id INTEGER NOT NULL,
+    CREATE TABLE IF NOT EXISTS team_player (
       team_id INTEGER NOT NULL,
-      PRIMARY KEY(player_id, team_id),
-      FOREIGN KEY(player_id) REFERENCES player(id),
-      FOREIGN KEY(team_id) REFERENCES team(id)
+      player_id INTEGER NOT NULL,
+      PRIMARY KEY(team_id, player_id),
+      FOREIGN KEY(team_id) REFERENCES team(id),
+      FOREIGN KEY(player_id) REFERENCES player(id)
     )
   `);
 

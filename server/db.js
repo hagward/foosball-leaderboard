@@ -14,6 +14,37 @@ class Database {
     });
   }
 
+  addTeam(name, playerIds) {
+    return this.query((db, resolve, reject) => {
+      let teamId;
+
+      let statement = db
+        .prepare('INSERT INTO team (name) VALUES (?)')
+        .run(name, function (error) {
+          if (error) {
+            reject(error);
+          } else {
+            teamId = this.lastID;
+          }
+        });
+      statement.finalize();
+
+      for (let i = 0; i < playerIds.length; i++) {
+        const playerId = playerIds[i];
+        statement = db
+          .prepare('INSERT INTO team_player (team_id, player_id) VALUES (?, ?)')
+          .run(teamId, playerId, error => {
+            if (error) {
+              reject(error);
+            } else if (i === playerIds.length - 1) {
+              resolve();
+            }
+          });
+        statement.finalize();
+      }
+    });
+  }
+
   getTwoRatings(playerId1, playerId2) {
     return this.query((db, resolve, reject) =>
       db.get(
@@ -130,7 +161,7 @@ class Database {
   query(callback) {
     return new Promise((resolve, reject) => {
       const db = new sqlite3.Database(this.databaseName);
-      callback(db, resolve, reject);
+      db.serialize(() => callback(db, resolve, reject));
       db.close();
     });
   }

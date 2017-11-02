@@ -61,6 +61,15 @@ app.post('/api/player', (req, res) => {
     });
 });
 
+app.post('/api/team', (req, res) => {
+  db.addTeam(req.body.name, req.body.players)
+    .then(() => res.sendStatus(200))
+    .catch(error => {
+      console.log(error);
+      res.sendStatus(400);
+    });
+});
+
 app.post('/api/game', (req, res) => {
   const a = req.body.a;
   const b = req.body.b;
