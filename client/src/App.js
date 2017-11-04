@@ -32,7 +32,7 @@ export default class App extends PureComponent {
   }
 
   fetchGames() {
-    fetch('/api/games', {
+    fetch('/api/singles', {
       method: 'GET'
     })
     .then(response => response.json())

@@ -87,7 +87,7 @@ export default class RegisterGame extends PureComponent {
   registerGame(event) {
     event.preventDefault();
 
-    fetch('/api/game', {
+    fetch('/api/single', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

@@ -47,13 +47,13 @@ class Database {
     );
   }
 
-  addGame(playerA, playerB) {
+  addSinglesGame(playerA, playerB) {
     return this.queries(
       (db, resolve, reject) => {
         const statement = db
           .prepare(
             `
-            INSERT INTO game (
+            INSERT INTO game_singles (
               player_a_id, player_b_id, player_a_score, player_b_score
             )
             VALUES (?, ?, ?, ?)
@@ -80,7 +80,7 @@ class Database {
     );
   }
 
-  getLatestGames(n) {
+  getLatestSinglesGames(n) {
     return this.query((db, resolve, reject) =>
       db.all(
         `
@@ -91,7 +91,7 @@ class Database {
           p2.name AS player_b_name,
           g.player_a_score,
           g.player_b_score
-        FROM game AS g
+        FROM game_singles AS g
         INNER JOIN player AS p1 ON p1.id = player_a_id
         INNER JOIN player AS p2 ON p2.id = player_b_id
         ORDER BY created_timestamp DESC
@@ -127,7 +127,7 @@ class Database {
           THEN 1 ELSE NULL
           END
         )*1.0/COUNT(id) AS win_ratio
-        FROM game
+        FROM game_singles
         WHERE player_a_id = ? OR player_b_id = ?
         `,
         playerId, playerId, playerId, playerId,

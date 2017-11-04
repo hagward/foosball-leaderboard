@@ -23,7 +23,7 @@ db.serialize(() => {
   `);
 
   db.run(`
-    CREATE TABLE IF NOT EXISTS game (
+    CREATE TABLE IF NOT EXISTS game_singles (
       id INTEGER PRIMARY KEY NOT NULL,
       created_timestamp INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP,
       player_a_id INTEGER NOT NULL,
@@ -32,6 +32,19 @@ db.serialize(() => {
       player_b_score INTEGER NOT NULL,
       FOREIGN KEY(player_a_id) REFERENCES player(id),
       FOREIGN KEY(player_b_id) REFERENCES player(id)
+    )
+  `);
+
+  db.run(`
+    CREATE TABLE IF NOT EXISTS game_doubles (
+      id INTEGER PRIMARY KEY NOT NULL,
+      created_timestamp INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      team_a_id INTEGER NOT NULL,
+      team_b_id INTEGER NOT NULL,
+      team_a_score INTEGER NOT NULL,
+      team_b_score INTEGER NOT NULL,
+      FOREIGN KEY(team_a_id) REFERENCES team(id),
+      FOREIGN KEY(team_b_id) REFERENCES team(id)
     )
   `);
 });

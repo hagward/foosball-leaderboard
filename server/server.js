@@ -34,9 +34,9 @@ app.get('/api/players', (req, res) => {
     });
 });
 
-app.get('/api/games', (req, res) => {
-  db.getLatestGames(10)
-    .then(games => res.send(games))
+app.get('/api/singles', (req, res) => {
+  db.getLatestSinglesGames(10)
+    .then(singles => res.send(singles))
     .catch(error => {
       console.log(error);
       res.sendStatus(400);
@@ -71,7 +71,7 @@ app.post('/api/team', (req, res) => {
     });
 });
 
-app.post('/api/game', (req, res) => {
+app.post('/api/single', (req, res) => {
   const a = req.body.a;
   const b = req.body.b;
 
@@ -82,7 +82,7 @@ app.post('/api/game', (req, res) => {
       if (!newRatingA || !newRatingB || a.id === b.id) {
         return Promise.reject();
       } else {
-        return db.addGame({
+        return db.addSinglesGame({
             id: a.id,
             score: a.score,
             newRating: newRatingA
