@@ -42,7 +42,7 @@ export default class RegisterGame extends PureComponent {
                 <input id="playerBField" type="number" placeholder="0-10" min="0" max="10" value={this.state.playerBScore} onChange={this.handleScoreChanged} />
               </div>
             </div>
-            <input className="button-primary" value="Register" type="submit" onClick={this.registerGame} />
+            <input className="button-primary" value="Register game" type="submit" onClick={this.registerGame} />
           </fieldset>
         </form>
       </section>

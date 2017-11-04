@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import AddPlayer from './AddPlayer';
+import AddTeam from './AddTeam';
 import Games from './Games';
 import Leaderboard from './Leaderboard';
 import RegisterGame from './RegisterGame';
@@ -68,6 +69,7 @@ export default class App extends PureComponent {
         </div>
         <RegisterGame players={this.state.players} callback={this.handleGameRegistered} />
         <AddPlayer callback={this.fetchAll} />
+        <AddTeam players={this.state.players} callback={this.fetchAll} />
       </div>
     );
   }

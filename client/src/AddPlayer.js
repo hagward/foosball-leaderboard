@@ -20,7 +20,7 @@ export default class AddPlayer extends PureComponent {
           <fieldset>
             <label htmlFor="nameField">Name</label>
             <input placeholder="Adelbert Steiner" id="nameField" type="text" value={this.state.name} onChange={this.nameChanged} />
-            <input className="button-primary" value="Add" type="submit" onClick={this.addPlayer} />
+            <input className="button-primary" value="Add player" type="submit" onClick={this.addPlayer} />
           </fieldset>
         </form>
       </section>
