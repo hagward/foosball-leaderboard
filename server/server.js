@@ -62,7 +62,8 @@ app.post('/api/player', (req, res) => {
 });
 
 app.post('/api/team', (req, res) => {
-  db.addTeam(req.body.name, req.body.players)
+  const body = req.body;
+  db.addTeam(body.name, body.playerAId, body.playerBId)
     .then(() => res.sendStatus(200))
     .catch(error => {
       console.log(error);
