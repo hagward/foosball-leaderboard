@@ -12,9 +12,10 @@ export default class RegisterGame extends PureComponent {
       playerBScore: ''
     };
 
+    this.handleChange = this.handleChange.bind(this);
     this.registerGame = this.registerGame.bind(this);
-    this.handleNameChanged = this.handleNameChanged.bind(this);
-    this.handleScoreChanged = this.handleScoreChanged.bind(this);
+    this.renderPlayerSelect = this.renderPlayerSelect.bind(this);
+    this.renderScoreInput = this.renderScoreInput.bind(this);
   }
 
   render() {
@@ -25,22 +26,22 @@ export default class RegisterGame extends PureComponent {
           <fieldset>
             <div className="row">
               <div className="column">
-                <label htmlFor="playerASelect">Player A</label>
-                {this.renderPlayerSelect('playerASelect', this.state.playerAId)}
+                <label htmlFor="singles-player-a-select">Player A</label>
+                {this.renderPlayerSelect('singles-player-a-select', 'playerAId', this.state.playerAId)}
               </div>
               <div className="column">
-                <label htmlFor="playerBSelect">Player B</label>
-                {this.renderPlayerSelect('playerBSelect', this.state.playerBId)}
+                <label htmlFor="singles-player-b-select">Player B</label>
+                {this.renderPlayerSelect('singles-player-b-select', 'playerBId', this.state.playerBId)}
               </div>
             </div>
             <div className="row">
               <div className="column">
-                <label htmlFor="playerAField">Player A score</label>
-                <input id="playerAField" type="number" placeholder="0-10" min="0" max="10" value={this.state.playerAScore} onChange={this.handleScoreChanged} />
+                <label htmlFor="singles-player-a-score">Player A score</label>
+                {this.renderScoreInput('singles-player-a-score', 'playerAScore', this.state.playerAScore)}
               </div>
               <div className="column">
-                <label htmlFor="playerBField">Player B score</label>
-                <input id="playerBField" type="number" placeholder="0-10" min="0" max="10" value={this.state.playerBScore} onChange={this.handleScoreChanged} />
+                <label htmlFor="singles-player-b-score">Player B score</label>
+                {this.renderScoreInput('singles-player-b-score', 'playerBScore', this.state.playerBScore)}
               </div>
             </div>
             <input className="button-primary" value="Register game" type="submit" onClick={this.registerGame} />
@@ -50,9 +51,9 @@ export default class RegisterGame extends PureComponent {
     );
   }
 
-  renderPlayerSelect(id, value) {
+  renderPlayerSelect(id, name, value) {
     return (
-      <select id={id} value={value} onChange={this.handleNameChanged}>
+      <select id={id} name={name} value={value} onChange={this.handleChange}>
         <option value="" disabled>Select player</option>
         {this.props.players.map(player =>
           <option key={player.id} value={player.id}>{player.name}</option>
@@ -61,28 +62,24 @@ export default class RegisterGame extends PureComponent {
     );
   }
 
-  handleNameChanged(event) {
-    if (event.target.id === 'playerASelect') {
-      this.setState({
-        playerAId: event.target.value
-      });
-    } else {
-      this.setState({
-        playerBId: event.target.value
-      });
-    }
+  renderScoreInput(id, name, value) {
+    return (
+      <input
+        id={id}
+        name={name}
+        type="number"
+        placeholder="0-10"
+        min="0"
+        max="10"
+        value={value}
+        onChange={this.handleChange}
+      />
+    );
   }
 
-  handleScoreChanged(event) {
-    if (event.target.id === 'playerAField') {
-      this.setState({
-        playerAScore: event.target.value
-      });
-    } else {
-      this.setState({
-        playerBScore: event.target.value
-      });
-    }
+  handleChange(event) {
+    const target = event.target;
+    this.setState({ [target.name]: target.value });
   }
 
   registerGame(event) {
