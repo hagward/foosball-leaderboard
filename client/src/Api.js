@@ -9,8 +9,8 @@ export default class Api {
     });
   }
 
-  static addSingles(playerAId, playerAScore, playerBId, playerBScore) {
-    return fetch('/api/singles', {
+  static addGame(type, playerAId, playerAScore, playerBId, playerBScore) {
+    return fetch('/api/' + type, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

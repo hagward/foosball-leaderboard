@@ -13,7 +13,8 @@ export default class App extends PureComponent {
     this.state = {
       games: [],
       leaderboard: [],
-      players: []
+      players: [],
+      teams: []
     };
 
     this.fetchAll = this.fetchAll.bind(this);
@@ -59,7 +60,14 @@ export default class App extends PureComponent {
             <Games games={this.state.games} />
           </div>
         </div>
-        <RegisterGame players={this.state.players} callback={this.handleGameRegistered} />
+        <div className="row">
+          <div className="column">
+            <RegisterGame type="singles" players={this.state.players} callback={this.handleGameRegistered} />
+          </div>
+          <div className="column">
+            <RegisterGame type="doubles" players={this.state.teams} callback={this.handleGameRegistered} />
+          </div>
+        </div>
         <AddPlayer callback={this.fetchAll} />
         <AddTeam players={this.state.players} callback={this.fetchAll} />
       </div>
