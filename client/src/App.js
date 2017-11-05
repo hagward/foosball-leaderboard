@@ -4,6 +4,7 @@ import AddTeam from './AddTeam';
 import Games from './Games';
 import Leaderboard from './Leaderboard';
 import RegisterGame from './RegisterGame';
+import Api from './Api';
 
 export default class App extends PureComponent {
   constructor() {
@@ -33,27 +34,18 @@ export default class App extends PureComponent {
   }
 
   fetchGames() {
-    fetch('/api/singles', {
-      method: 'GET'
-    })
-    .then(response => response.json())
-    .then(games => this.setState({ games: games }));
+    Api.getSingles()
+      .then(games => this.setState({ games: games }));
   }
 
   fetchLeaderboard() {
-    fetch('/api/leaderboard', {
-      method: 'GET'
-    })
-    .then(response => response.json())
-    .then(leaderboard => this.setState({ leaderboard: leaderboard }));
+    Api.getLeaderboard()
+      .then(leaderboard => this.setState({ leaderboard: leaderboard }));
   }
 
   fetchPlayers() {
-    fetch('/api/players', {
-      method: 'GET'
-    })
-    .then(response => response.json())
-    .then(players => this.setState({ players: players }));
+    Api.getPlayers()
+      .then(players => this.setState({ players: players }));
   }
 
   render() {

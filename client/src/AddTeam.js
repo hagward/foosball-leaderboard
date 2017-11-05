@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import Api from './Api';
 
 export default class AddTeam extends PureComponent {
   constructor(props) {
@@ -62,23 +63,15 @@ export default class AddTeam extends PureComponent {
   handleClick(event) {
     event.preventDefault();
 
-    fetch('/api/team', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: this.state.name,
-        playerAId: this.state.playerAId,
-        playerBId: this.state.playerBId
-      })
-    })
-    .then(response => {
-      this.setState({
-        name: '',
-        playerAId: '',
-        playerBId: ''
+    Api.addTeam(this.state.name, this.state.playerAId, this.state.playerBId)
+      .then(response => {
+        this.setState({
+          name: '',
+          playerAId: '',
+          playerBId: ''
+        });
+        this.props.callback();
       });
-      this.props.callback();
-    });
   }
 
   handleChange(event) {

@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import Api from './Api';
 
 export default class AddPlayer extends PureComponent {
   constructor(props) {
@@ -34,16 +35,10 @@ export default class AddPlayer extends PureComponent {
   addPlayer(event) {
     event.preventDefault();
 
-    fetch('/api/player', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: this.state.name
-      })
-    })
-    .then(response => {
-      this.setState({ name: '' });
-      this.props.callback();
-    });
+    Api.addPlayer(this.state.name)
+      .then(response => {
+        this.setState({ name: '' });
+        this.props.callback();
+      });
   }
 }

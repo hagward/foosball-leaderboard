@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import Api from './Api';
 
 export default class RegisterGame extends PureComponent {
   constructor(props) {
@@ -87,26 +88,13 @@ export default class RegisterGame extends PureComponent {
   registerGame(event) {
     event.preventDefault();
 
-    fetch('/api/singles', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        a: {
-          id: this.state.playerAId,
-          score: this.state.playerAScore
-        },
-        b: {
-          id: this.state.playerBId,
-          score: this.state.playerBScore
-        }
-      })
-    })
-    .then(response => {
-      this.setState({
-        playerAScore: '',
-        playerBScore: ''
+    Api.addSingles(this.state.playerAId, this.state.playerAScore, this.state.playerBId, this.state.playerBScore)
+      .then(response => {
+        this.setState({
+          playerAScore: '',
+          playerBScore: ''
+        });
+        this.props.callback();
       });
-      this.props.callback();
-    });
   }
 }
