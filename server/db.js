@@ -61,6 +61,15 @@ class Database {
     );
   }
 
+  getTeams() {
+    return this.query((db, resolve, reject) =>
+      db.all(
+        'SELECT id, name FROM team ORDER BY name',
+        (error, rows) => error ? reject(error) : resolve(rows)
+      )
+    );
+  }
+
   addSinglesGame(playerA, playerB) {
     return this.queries(
       (db, resolve, reject) => {

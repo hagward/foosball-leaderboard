@@ -55,4 +55,10 @@ export default class Api {
       method: 'GET'
     }).then(response => response.json());
   }
+
+  static getTeams() {
+    return fetch('/api/teams', {
+      method: 'GET'
+    }).then(response => response.json());
+  }
 }

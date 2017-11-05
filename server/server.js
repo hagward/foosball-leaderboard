@@ -34,6 +34,15 @@ app.get('/api/players', (req, res) => {
     });
 });
 
+app.get('/api/teams', (req, res) => {
+  db.getTeams()
+    .then(teams => res.send(teams))
+    .catch(error => {
+      console.log(error);
+      res.sendStatus(400);
+    });
+});
+
 app.get('/api/singles', (req, res) => {
   db.getLatestSinglesGames(10)
     .then(singles => res.send(singles))

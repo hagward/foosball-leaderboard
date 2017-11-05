@@ -32,6 +32,7 @@ export default class App extends PureComponent {
     this.fetchGames();
     this.fetchLeaderboard();
     this.fetchPlayers();
+    this.fetchTeams();
   }
 
   fetchGames() {
@@ -47,6 +48,11 @@ export default class App extends PureComponent {
   fetchPlayers() {
     Api.getPlayers()
       .then(players => this.setState({ players: players }));
+  }
+
+  fetchTeams() {
+    Api.getTeams()
+      .then(teams => this.setState({ teams: teams }));
   }
 
   render() {
