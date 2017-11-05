@@ -38,6 +38,20 @@ class Database {
     );
   }
 
+  getTeamRatings(teamAId, teamBId) {
+    return this.query((db, resolve, reject) => {
+      db.get(
+        `
+        SELECT a.rating AS ratingA, b.rating AS ratingB
+        FROM team AS a
+        LEFT JOIN team AS b
+        WHERE a.id = ? AND b.id = ?
+        `,
+        teamAId, teamBId,
+        (error, row) => error ? reject(error) : resolve(row))
+    });
+  }
+
   getPlayers() {
     return this.query((db, resolve, reject) =>
       db.all(
@@ -75,6 +89,37 @@ class Database {
         const statement = db
           .prepare('UPDATE player SET rating = (?) WHERE id = (?)')
           .run(playerB.newRating, playerB.id, error => error ? reject(error) : resolve());
+        statement.finalize();
+      }
+    );
+  }
+
+  addDoublesGame(teamA, teamB) {
+    return this.query(
+      (db, resolve, reject) => {
+        let statement = db
+          .prepare(
+            `
+            INSERT INTO game_doubles (
+              team_a_id, team_b_id, team_a_score, team_b_score
+            )
+            VALUES (?, ?, ?, ?)
+            `
+          )
+          .run(
+            teamA.id, teamB.id, teamA.score, teamB.score,
+            error => { if (error) reject(error) }
+          );
+        statement.finalize();
+
+        statement = db
+          .prepare('UPDATE team SET rating = (?) WHERE id = (?)')
+          .run(teamA.newRating, teamA.id, error => { if (error) reject(error) });
+        statement.finalize();
+
+        statement = db
+          .prepare('UPDATE team SET rating = (?) WHERE id = (?)')
+          .run(teamB.newRating, teamB.id, error => error ? reject(error) : resolve());
         statement.finalize();
       }
     );

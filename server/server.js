@@ -71,7 +71,7 @@ app.post('/api/team', (req, res) => {
     });
 });
 
-app.post('/api/single', (req, res) => {
+app.post('/api/singles', (req, res) => {
   const a = req.body.a;
   const b = req.body.b;
 
@@ -83,6 +83,36 @@ app.post('/api/single', (req, res) => {
         return Promise.reject();
       } else {
         return db.addSinglesGame({
+            id: a.id,
+            score: a.score,
+            newRating: newRatingA
+          }, {
+            id: b.id,
+            score: b.score,
+            newRating: newRatingB
+          }
+        );
+      }
+    })
+    .then(() => res.sendStatus(200))
+    .catch(error => {
+      console.log(error);
+      res.sendStatus(400);
+    });
+});
+
+app.post('/api/doubles', (req, res) => {
+  const a = req.body.a;
+  const b = req.body.b;
+
+  db.getTeamRatings(a.id, b.id)
+    .then(row => {
+      const [newRatingA, newRatingB] = elo.getNewRatings(row.ratingA, row.ratingB, a.score, b.score);
+
+      if (!newRatingA || !newRatingB || a.id === b.id) {
+        return Promise.reject();
+      } else {
+        return db.addDoublesGame({
             id: a.id,
             score: a.score,
             newRating: newRatingA
