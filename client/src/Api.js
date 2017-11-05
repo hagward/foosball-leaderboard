@@ -44,12 +44,6 @@ export default class Api {
     }).then(response => response.json());
   }
 
-  static getLeaderboard() {
-    return fetch('/api/leaderboard', {
-      method: 'GET'
-    }).then(response => response.json());
-  }
-
   static getPlayers() {
     return fetch('/api/players', {
       method: 'GET'

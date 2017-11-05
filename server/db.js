@@ -55,7 +55,7 @@ class Database {
   getPlayers() {
     return this.query((db, resolve, reject) =>
       db.all(
-        'SELECT id, name FROM player ORDER BY name',
+        'SELECT id, name, rating FROM player',
         (error, rows) => error ? reject(error) : resolve(rows)
       )
     );
@@ -64,7 +64,7 @@ class Database {
   getTeams() {
     return this.query((db, resolve, reject) =>
       db.all(
-        'SELECT id, name FROM team ORDER BY name',
+        'SELECT id, name, rating FROM team',
         (error, rows) => error ? reject(error) : resolve(rows)
       )
     );
@@ -152,19 +152,6 @@ class Database {
         LIMIT (?)
         `,
         n,
-        (error, rows) => error ? reject(error) : resolve(rows)
-      )
-    );
-  }
-
-  getLeaderboard() {
-    return this.query((db, resolve, reject) =>
-      db.all(
-        `
-        SELECT id, name, rating
-        FROM player
-        ORDER BY rating DESC
-        `,
         (error, rows) => error ? reject(error) : resolve(rows)
       )
     );

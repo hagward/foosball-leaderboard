@@ -4,7 +4,7 @@ export default class Leaderboard extends PureComponent {
   render() {
     return (
       <section>
-        <h2>Leaderboard</h2>
+        <h2>Leaderboard, {this.props.type}</h2>
         <table>
           <thead>
             <tr>

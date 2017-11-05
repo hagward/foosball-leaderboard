@@ -12,16 +12,15 @@ export default class App extends PureComponent {
 
     this.state = {
       games: [],
-      leaderboard: [],
+      leaderboardSingles: [],
+      leaderboardDoubles: [],
       players: [],
       teams: []
     };
 
     this.fetchAll = this.fetchAll.bind(this);
     this.fetchGames = this.fetchGames.bind(this);
-    this.fetchLeaderboard = this.fetchLeaderboard.bind(this);
     this.fetchPlayers = this.fetchPlayers.bind(this);
-    this.handleGameRegistered = this.handleGameRegistered.bind(this);
   }
 
   componentDidMount() {
@@ -30,7 +29,6 @@ export default class App extends PureComponent {
 
   fetchAll() {
     this.fetchGames();
-    this.fetchLeaderboard();
     this.fetchPlayers();
     this.fetchTeams();
   }
@@ -40,19 +38,40 @@ export default class App extends PureComponent {
       .then(games => this.setState({ games: games }));
   }
 
-  fetchLeaderboard() {
-    Api.getLeaderboard()
-      .then(leaderboard => this.setState({ leaderboard: leaderboard }));
-  }
-
   fetchPlayers() {
     Api.getPlayers()
-      .then(players => this.setState({ players: players }));
+      .then(players => this.setState({
+        players: players.slice().sort((a, b) => {
+          const nameA = a.name.toUpperCase();
+          const nameB = b.name.toUpperCase();
+          if (nameA < nameB) {
+            return -1;
+          } else if (nameA > nameB) {
+            return 1;
+          } else {
+            return 0;
+          }
+        }),
+        leaderboardSingles: players.slice().sort((a, b) => b.rating - a.rating)
+      }));
   }
 
   fetchTeams() {
     Api.getTeams()
-      .then(teams => this.setState({ teams: teams }));
+      .then(teams => this.setState({
+        teams: teams.slice().sort((a, b) => {
+          const nameA = a.name.toUpperCase();
+          const nameB = b.name.toUpperCase();
+          if (nameA < nameB) {
+            return -1;
+          } else if (nameA > nameB) {
+            return 1;
+          } else {
+            return 0;
+          }
+        }),
+        leaderboardDoubles: teams.slice().sort((a, b) => b.rating - a.rating)
+      }));
   }
 
   render() {
@@ -60,28 +79,24 @@ export default class App extends PureComponent {
       <div className="container">
         <div className="row">
           <div className="column">
-            <Leaderboard leaderboard={this.state.leaderboard} />
+            <Leaderboard type="singles" leaderboard={this.state.leaderboardSingles} />
           </div>
           <div className="column">
-            <Games games={this.state.games} />
+            <Leaderboard type="doubles" leaderboard={this.state.leaderboardDoubles} />
           </div>
         </div>
+        <Games games={this.state.games} />
         <div className="row">
           <div className="column">
-            <RegisterGame type="singles" players={this.state.players} callback={this.handleGameRegistered} />
+            <RegisterGame type="singles" players={this.state.players} callback={this.fetchAll} />
           </div>
           <div className="column">
-            <RegisterGame type="doubles" players={this.state.teams} callback={this.handleGameRegistered} />
+            <RegisterGame type="doubles" players={this.state.teams} callback={this.fetchAll} />
           </div>
         </div>
         <AddPlayer callback={this.fetchAll} />
         <AddTeam players={this.state.players} callback={this.fetchAll} />
       </div>
     );
-  }
-
-  handleGameRegistered() {
-    this.fetchGames();
-    this.fetchLeaderboard();
   }
 }

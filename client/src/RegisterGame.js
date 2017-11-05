@@ -24,7 +24,7 @@ export default class RegisterGame extends PureComponent {
   render() {
     return (
       <section>
-        <h2>Register {this.props.type}</h2>
+        <h2>Register game, {this.props.type}</h2>
         <form>
           <fieldset>
             <div className="row">

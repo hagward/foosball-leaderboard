@@ -16,15 +16,6 @@ app.use((req, res, next) => {
 
 app.use('/', express.static('../client/build'));
 
-app.get('/api/leaderboard', (req, res) => {
-  db.getLeaderboard()
-    .then(leaderboard => res.send(leaderboard))
-    .catch(error => {
-      console.log(error);
-      res.sendStatus(400);
-    });
-});
-
 app.get('/api/players', (req, res) => {
   db.getPlayers()
     .then(players => res.send(players))
