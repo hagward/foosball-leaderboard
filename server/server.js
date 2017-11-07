@@ -35,7 +35,7 @@ app.get('/api/teams', (req, res) => {
 });
 
 app.get('/api/singles', (req, res) => {
-  db.getLatestSinglesGames(10)
+  db.getLatestGames(10)
     .then(singles => res.send(singles))
     .catch(error => {
       console.log(error);

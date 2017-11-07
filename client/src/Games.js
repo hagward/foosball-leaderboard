@@ -9,6 +9,7 @@ export default class Games extends PureComponent {
         <table>
           <thead>
             <tr>
+              <th>Type</th>
               <th>Player A</th>
               <th>Player B</th>
               <th>Result</th>
@@ -20,9 +21,10 @@ export default class Games extends PureComponent {
               const date = moment.utc(game.created_timestamp);
               return (
                 <tr key={game.id}>
-                  <td>{game.player_a_name}</td>
-                  <td>{game.player_b_name}</td>
-                  <td>{game.player_a_score}:{game.player_b_score}</td>
+                  <td>{this.capitalizeWord(game.type)}</td>
+                  <td>{game.a_name}</td>
+                  <td>{game.b_name}</td>
+                  <td>{game.a_score}:{game.b_score}</td>
                   <td title={date.local().format('LTS')}>{date.fromNow()}</td>
                 </tr>
               )
@@ -31,5 +33,9 @@ export default class Games extends PureComponent {
         </table>
       </section>
     );
+  }
+
+  capitalizeWord(word) {
+    return word[0].toUpperCase() + word.substr(1);
   }
 }

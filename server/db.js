@@ -134,22 +134,37 @@ class Database {
     );
   }
 
-  getLatestSinglesGames(n) {
+  getLatestGames(n) {
     return this.query((db, resolve, reject) =>
       db.all(
         `
-        SELECT
-          g.id,
-          g.created_timestamp,
-          p1.name AS player_a_name,
-          p2.name AS player_b_name,
-          g.player_a_score,
-          g.player_b_score
-        FROM game_singles AS g
-        INNER JOIN player AS p1 ON p1.id = player_a_id
-        INNER JOIN player AS p2 ON p2.id = player_b_id
+        SELECT * from (
+          SELECT
+            gs.id,
+            gs.created_timestamp,
+            p1.name AS a_name,
+            p2.name AS b_name,
+            gs.player_a_score AS a_score,
+            gs.player_b_score AS b_score,
+            'singles' AS type
+          FROM game_singles AS gs
+            INNER JOIN player AS p1 ON p1.id = player_a_id
+            INNER JOIN player AS p2 ON p2.id = player_b_id
+          UNION ALL
+          SELECT
+            gd.id,
+            gd.created_timestamp,
+            t1.name AS a_name,
+            t2.name AS b_name,
+            gd.team_a_score AS a_score,
+            gd.team_b_score AS b_score,
+            'doubles' AS type
+          FROM game_doubles AS gd
+            INNER JOIN team AS t1 ON t1.id = team_a_id
+            INNER JOIN team AS t2 ON t2.id = team_b_id
+        )
         ORDER BY created_timestamp DESC
-        LIMIT (?)
+        LIMIT ?
         `,
         n,
         (error, rows) => error ? reject(error) : resolve(rows)
