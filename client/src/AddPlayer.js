@@ -8,9 +8,6 @@ export default class AddPlayer extends PureComponent {
     this.state = {
       name: ''
     };
-
-    this.addPlayer = this.addPlayer.bind(this);
-    this.nameChanged = this.nameChanged.bind(this);
   }
 
   render() {
@@ -28,11 +25,11 @@ export default class AddPlayer extends PureComponent {
     );
   }
 
-  nameChanged(event) {
+  nameChanged = (event) => {
     this.setState({ name: event.target.value });
   }
 
-  addPlayer(event) {
+  addPlayer = (event) => {
     event.preventDefault();
 
     Api.addPlayer(this.state.name)

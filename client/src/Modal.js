@@ -8,8 +8,6 @@ export default class Modal extends PureComponent {
     this.state = {
       visible: true
     };
-
-    this.handleClose = this.handleClose.bind(this);
   }
 
   render() {
@@ -30,7 +28,7 @@ export default class Modal extends PureComponent {
     );
   }
 
-  handleClose() {
+  handleClose = () => {
     this.setState({ visible: false });
   }
 }

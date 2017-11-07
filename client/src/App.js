@@ -17,28 +17,24 @@ export default class App extends PureComponent {
       players: [],
       teams: []
     };
-
-    this.fetchAll = this.fetchAll.bind(this);
-    this.fetchGames = this.fetchGames.bind(this);
-    this.fetchPlayers = this.fetchPlayers.bind(this);
   }
 
   componentDidMount() {
     this.fetchAll();
   }
 
-  fetchAll() {
+  fetchAll = () => {
     this.fetchGames();
     this.fetchPlayers();
     this.fetchTeams();
   }
 
-  fetchGames() {
+  fetchGames = () => {
     Api.getSingles()
       .then(games => this.setState({ games: games }));
   }
 
-  fetchPlayers() {
+  fetchPlayers = () => {
     Api.getPlayers()
       .then(players => this.setState({
         players: players.slice().sort((a, b) => {
@@ -56,7 +52,7 @@ export default class App extends PureComponent {
       }));
   }
 
-  fetchTeams() {
+  fetchTeams = () => {
     Api.getTeams()
       .then(teams => this.setState({
         teams: teams.slice().sort((a, b) => {

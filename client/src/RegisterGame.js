@@ -14,11 +14,6 @@ export default class RegisterGame extends PureComponent {
 
     this.playerText = this.props.type === 'doubles' ? 'team' : 'player';
     this.playerTextCapitalized = this.props.type === 'doubles' ? 'Team' : 'Player';
-
-    this.handleChange = this.handleChange.bind(this);
-    this.registerGame = this.registerGame.bind(this);
-    this.renderPlayerSelect = this.renderPlayerSelect.bind(this);
-    this.renderScoreInput = this.renderScoreInput.bind(this);
   }
 
   render() {
@@ -54,7 +49,7 @@ export default class RegisterGame extends PureComponent {
     );
   }
 
-  renderPlayerSelect(id, name, value) {
+  renderPlayerSelect = (id, name, value) => {
     return (
       <select id={id} name={name} value={value} onChange={this.handleChange}>
         <option value="" disabled>Select {this.playerText}</option>
@@ -65,7 +60,7 @@ export default class RegisterGame extends PureComponent {
     );
   }
 
-  renderScoreInput(id, name, value) {
+  renderScoreInput = (id, name, value) => {
     return (
       <input
         id={id}
@@ -80,12 +75,12 @@ export default class RegisterGame extends PureComponent {
     );
   }
 
-  handleChange(event) {
+  handleChange = (event) => {
     const target = event.target;
     this.setState({ [target.name]: target.value });
   }
 
-  registerGame(event) {
+  registerGame = (event) => {
     event.preventDefault();
 
     Api.addGame(this.props.type, this.state.playerAId, this.state.playerAScore, this.state.playerBId, this.state.playerBScore)

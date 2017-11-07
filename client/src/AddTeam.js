@@ -10,9 +10,6 @@ export default class AddTeam extends PureComponent {
       playerAId: '',
       playerBId: ''
     };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
   }
 
   render() {
@@ -60,7 +57,7 @@ export default class AddTeam extends PureComponent {
     );
   }
 
-  handleClick(event) {
+  handleClick = (event) => {
     event.preventDefault();
 
     Api.addTeam(this.state.name, this.state.playerAId, this.state.playerBId)
@@ -74,7 +71,7 @@ export default class AddTeam extends PureComponent {
       });
   }
 
-  handleChange(event) {
+  handleChange = (event) => {
     const target = event.target;
     this.setState({ [target.name]: target.value });
   }
