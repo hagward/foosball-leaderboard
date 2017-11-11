@@ -20,7 +20,7 @@ export default class Games extends PureComponent {
             {this.props.games.map(game => {
               const date = moment.utc(game.created_timestamp);
               return (
-                <tr key={game.id}>
+                <tr key={game.type + game.id}>
                   <td>{this.capitalizeWord(game.type)}</td>
                   <td>{game.a_name}</td>
                   <td>{game.b_name}</td>
