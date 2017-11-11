@@ -176,13 +176,15 @@ class Database {
     return this.query((db, resolve, reject) =>
       db.get(
         `
-        SELECT COUNT(
-          CASE WHEN
-            (player_a_id = ? AND player_a_score > player_b_score) OR
-            (player_b_id = ? AND player_b_score > player_a_score)
-          THEN 1 ELSE NULL
-          END
-        )*1.0/COUNT(id) AS win_ratio
+        SELECT
+          COUNT(*) AS total,
+          COUNT(
+            CASE WHEN
+              (player_a_id = ? AND player_a_score > player_b_score) OR
+              (player_b_id = ? AND player_b_score > player_a_score)
+            THEN 1 ELSE NULL
+            END
+          ) AS wins
         FROM game_singles
         WHERE player_a_id = ? OR player_b_id = ?
         `,
