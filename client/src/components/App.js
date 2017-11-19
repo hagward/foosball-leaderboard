@@ -4,7 +4,7 @@ import AddTeam from './AddTeam';
 import Games from './Games';
 import Leaderboard from './Leaderboard';
 import RegisterGame from './RegisterGame';
-import Api from './Api';
+import Api from '../Api';
 
 export default class App extends PureComponent {
   constructor() {

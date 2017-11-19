@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import Api from './Api';
+import Api from '../Api';
 
 export default class AddPlayer extends PureComponent {
   constructor(props) {

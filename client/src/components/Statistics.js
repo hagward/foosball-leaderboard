@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import Api from './Api';
+import Api from '../Api';
 import './Statistics.css';
 
 export default class Statistics extends PureComponent {
