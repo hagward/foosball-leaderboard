@@ -90,8 +90,14 @@ export default class App extends PureComponent {
             <RegisterGame type="doubles" players={this.state.teams} callback={this.fetchAll} />
           </div>
         </div>
-        <AddPlayer callback={this.fetchAll} />
-        <AddTeam players={this.state.players} callback={this.fetchAll} />
+        <div className="row">
+          <div className="column">
+            <AddPlayer callback={this.fetchAll} />
+          </div>
+          <div className="column">
+            <AddTeam players={this.state.players} callback={this.fetchAll} />
+          </div>
+        </div>
       </div>
     );
   }
