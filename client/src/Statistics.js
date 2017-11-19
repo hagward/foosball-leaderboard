@@ -29,6 +29,6 @@ export default class Statistics extends PureComponent {
 
   winRatioPercent() {
     const winRatio = this.state.wins / (this.state.wins + this.state.losses);
-    return Number(winRatio * 100).toFixed(2);
+    return Number(winRatio * 100).toFixed(1);
   }
 }
