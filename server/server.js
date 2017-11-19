@@ -43,8 +43,8 @@ app.get('/api/singles', (req, res) => {
     });
 });
 
-app.get('/api/player', (req, res) => {
-  db.getPlayerStatistics(req.body.playerId)
+app.get('/api/player/:playerId', (req, res) => {
+  db.getPlayerStatistics(req.params.playerId)
     .then(statistics => res.send(statistics))
     .catch(error => {
       console.log(error);

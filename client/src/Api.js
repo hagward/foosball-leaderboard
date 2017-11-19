@@ -55,4 +55,10 @@ export default class Api {
       method: 'GET'
     }).then(response => response.json());
   }
+
+  static getPlayerStatistics(playerId) {
+    return fetch('/api/player/' + playerId, {
+      method: 'GET',
+    }).then(response => response.json());
+  }
 }

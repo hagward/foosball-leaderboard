@@ -177,18 +177,28 @@ class Database {
       db.get(
         `
         SELECT
-          COUNT(*) AS total,
+          p.name,
+          p.rating,
           COUNT(
             CASE WHEN
-              (player_a_id = ? AND player_a_score > player_b_score) OR
-              (player_b_id = ? AND player_b_score > player_a_score)
+              (g.player_a_id = ? AND g.player_a_score > g.player_b_score) OR
+              (g.player_b_id = ? AND g.player_b_score > g.player_a_score)
             THEN 1 ELSE NULL
             END
-          ) AS wins
-        FROM game_singles
-        WHERE player_a_id = ? OR player_b_id = ?
+          ) AS wins,
+          COUNT(
+            CASE WHEN
+              (g.player_a_id = ? AND g.player_a_score < g.player_b_score) OR
+              (g.player_b_id = ? AND g.player_b_score < g.player_a_score)
+            THEN 1 ELSE NULL
+            END
+          ) AS losses
+        FROM player p
+        INNER JOIN game_singles g
+          ON g.player_a_id = p.id OR g.player_b_id = p.id
+        WHERE p.id = ?
         `,
-        playerId, playerId, playerId, playerId,
+        playerId, playerId, playerId, playerId, playerId,
         (error, row) => error ? reject(error) : resolve(row)
       )
     );

@@ -1,6 +1,15 @@
 import React, { PureComponent } from 'react';
+import Modal from './Modal';
+import Statistics from './Statistics';
 
 export default class Leaderboard extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedPlayerId: null
+    };
+  }
+
   render() {
     return (
       <section>
@@ -17,13 +26,26 @@ export default class Leaderboard extends PureComponent {
             {this.props.leaderboard.map((player, index) =>
               <tr key={player.id}>
                 <td>{index + 1}</td>
-                <td>{player.name}</td>
+                <td><a href="#" onClick={() => this.setState({ selectedPlayerId: player.id })}>{player.name}</a></td>
                 <td>{player.rating}</td>
               </tr>
             )}
           </tbody>
         </table>
+        {this.state.selectedPlayerId &&
+          <Modal onClose={() => this.setState({ selectedPlayerId: null })}>
+            <Statistics playerId={this.state.selectedPlayerId} />
+          </Modal>
+        }
       </section>
+    );
+  }
+
+  createModal(playerId) {
+    return (
+      <Modal>
+        <Statistics playerId={this.state.selectedPlayerId} />
+      </Modal>
     );
   }
 }
