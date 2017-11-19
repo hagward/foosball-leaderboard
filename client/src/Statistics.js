@@ -19,16 +19,15 @@ export default class Statistics extends PureComponent {
         <h2>{this.state.name}</h2>
         <ul className="statistics__list">
           <li>Rating: {this.state.rating}</li>
-          <li>Win ratio: {this.winRatioPercent()}%</li>
-          <li>Wins: {this.state.wins}</li>
-          <li>Losses: {this.state.losses}</li>
+          <li>Games played: {this.state.games}</li>
+          <li>Win percentage: {this.winRatioPercent()}%</li>
         </ul>
       </section>
     );
   }
 
   winRatioPercent() {
-    const winRatio = this.state.wins / (this.state.wins + this.state.losses);
+    const winRatio = this.state.wins / Math.max(this.state.games, 1);
     return Number(winRatio * 100).toFixed(1);
   }
 }

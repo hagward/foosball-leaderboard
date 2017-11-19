@@ -186,19 +186,13 @@ class Database {
             THEN 1 ELSE NULL
             END
           ) AS wins,
-          COUNT(
-            CASE WHEN
-              (g.player_a_id = ? AND g.player_a_score < g.player_b_score) OR
-              (g.player_b_id = ? AND g.player_b_score < g.player_a_score)
-            THEN 1 ELSE NULL
-            END
-          ) AS losses
+          COUNT(g.id) AS games
         FROM player p
-        INNER JOIN game_singles g
+        LEFT JOIN game_singles g
           ON g.player_a_id = p.id OR g.player_b_id = p.id
         WHERE p.id = ?
         `,
-        playerId, playerId, playerId, playerId, playerId,
+        playerId, playerId, playerId,
         (error, row) => error ? reject(error) : resolve(row)
       )
     );
