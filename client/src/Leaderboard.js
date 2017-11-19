@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import Modal from './Modal';
 import Statistics from './Statistics';
+import './Leaderboard.css';
 
 export default class Leaderboard extends PureComponent {
   constructor(props) {
@@ -12,7 +13,7 @@ export default class Leaderboard extends PureComponent {
 
   render() {
     return (
-      <section>
+      <section className="leaderboard">
         <h2>Leaderboard, {this.props.type}</h2>
         <table>
           <thead>
@@ -26,7 +27,7 @@ export default class Leaderboard extends PureComponent {
             {this.props.leaderboard.map((player, index) =>
               <tr key={player.id}>
                 <td>{index + 1}</td>
-                <td><a href="#" onClick={() => this.setState({ selectedPlayerId: player.id })}>{player.name}</a></td>
+                <td>{this.renderPlayerLink(player.id, player.name)}</td>
                 <td>{player.rating}</td>
               </tr>
             )}
@@ -41,11 +42,11 @@ export default class Leaderboard extends PureComponent {
     );
   }
 
-  createModal(playerId) {
-    return (
-      <Modal>
-        <Statistics playerId={this.state.selectedPlayerId} />
-      </Modal>
-    );
+  renderPlayerLink(playerId, playerName) {
+    if (this.props.type === 'singles') {
+      return <a className="leaderboard__link" onClick={() => this.setState({ selectedPlayerId: playerId })}>{playerName}</a>;
+    } else {
+      return playerName;
+    }
   }
 }
