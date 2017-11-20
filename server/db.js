@@ -198,6 +198,25 @@ class Database {
     );
   }
 
+  getSinglesGames(playerId) {
+    return this.query((db, resolve, reject) =>
+      db.all(
+        `
+        SELECT
+          player_a_id,
+          player_b_id,
+          player_a_score,
+          player_b_score
+        FROM game_singles
+        WHERE player_a_id = ? OR player_b_id = ?
+        ORDER BY created_timestamp ASC
+        `,
+        playerId, playerId,
+        (error, rows) => error ? reject(error) : resolve(rows)
+      )
+    );
+  }
+
   query(callback) {
     return new Promise((resolve, reject) => {
       const db = new sqlite3.Database(this.databaseName);
