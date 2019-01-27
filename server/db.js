@@ -1,4 +1,4 @@
-const sqlite3 = require('sqlite3').verbose();
+const sqlite3 = require("sqlite3").verbose();
 
 class Database {
   constructor(databaseName) {
@@ -8,8 +8,8 @@ class Database {
   addPlayer(name) {
     return this.query((db, resolve, reject) => {
       const statement = db
-        .prepare('INSERT INTO player (name) VALUES (?)')
-        .run(name, error => error ? reject(error) : resolve());
+        .prepare("INSERT INTO player (name) VALUES (?)")
+        .run(name, error => (error ? reject(error) : resolve()));
       statement.finalize();
     });
   }
@@ -17,8 +17,12 @@ class Database {
   addTeam(name, playerAId, playerBId) {
     return this.query((db, resolve, reject) => {
       const statement = db
-        .prepare('INSERT INTO team (name, player_a_id, player_b_id) VALUES (?, ?, ?)')
-        .run(name, playerAId, playerBId, error => error ? reject(error) : resolve());
+        .prepare(
+          "INSERT INTO team (name, player_a_id, player_b_id) VALUES (?, ?, ?)"
+        )
+        .run(name, playerAId, playerBId, error =>
+          error ? reject(error) : resolve()
+        );
       statement.finalize();
     });
   }
@@ -32,8 +36,9 @@ class Database {
         LEFT JOIN player AS b
         WHERE a.id = (?) AND b.id = (?)
         `,
-        playerId1, playerId2,
-        (error, row) => error ? reject(error) : resolve(row)
+        playerId1,
+        playerId2,
+        (error, row) => (error ? reject(error) : resolve(row))
       )
     );
   }
@@ -47,25 +52,25 @@ class Database {
         LEFT JOIN team AS b
         WHERE a.id = ? AND b.id = ?
         `,
-        teamAId, teamBId,
-        (error, row) => error ? reject(error) : resolve(row))
+        teamAId,
+        teamBId,
+        (error, row) => (error ? reject(error) : resolve(row))
+      );
     });
   }
 
   getPlayers() {
     return this.query((db, resolve, reject) =>
-      db.all(
-        'SELECT id, name, rating FROM player',
-        (error, rows) => error ? reject(error) : resolve(rows)
+      db.all("SELECT id, name, rating FROM player", (error, rows) =>
+        error ? reject(error) : resolve(rows)
       )
     );
   }
 
   getTeams() {
     return this.query((db, resolve, reject) =>
-      db.all(
-        'SELECT id, name, rating FROM team',
-        (error, rows) => error ? reject(error) : resolve(rows)
+      db.all("SELECT id, name, rating FROM team", (error, rows) =>
+        error ? reject(error) : resolve(rows)
       )
     );
   }
@@ -82,56 +87,60 @@ class Database {
             VALUES (?, ?, ?, ?)
             `
           )
-          .run(
-            playerA.id, playerB.id, playerA.score, playerB.score,
-            error => error ? reject(error) : resolve()
+          .run(playerA.id, playerB.id, playerA.score, playerB.score, error =>
+            error ? reject(error) : resolve()
           );
         statement.finalize();
       },
       (db, resolve, reject) => {
         const statement = db
-          .prepare('UPDATE player SET rating = (?) WHERE id = (?)')
-          .run(playerA.newRating, playerA.id, error => error ? reject(error) : resolve());
+          .prepare("UPDATE player SET rating = (?) WHERE id = (?)")
+          .run(playerA.newRating, playerA.id, error =>
+            error ? reject(error) : resolve()
+          );
         statement.finalize();
       },
       (db, resolve, reject) => {
         const statement = db
-          .prepare('UPDATE player SET rating = (?) WHERE id = (?)')
-          .run(playerB.newRating, playerB.id, error => error ? reject(error) : resolve());
+          .prepare("UPDATE player SET rating = (?) WHERE id = (?)")
+          .run(playerB.newRating, playerB.id, error =>
+            error ? reject(error) : resolve()
+          );
         statement.finalize();
       }
     );
   }
 
   addDoublesGame(teamA, teamB) {
-    return this.query(
-      (db, resolve, reject) => {
-        let statement = db
-          .prepare(
-            `
+    return this.query((db, resolve, reject) => {
+      let statement = db
+        .prepare(
+          `
             INSERT INTO game_doubles (
               team_a_id, team_b_id, team_a_score, team_b_score
             )
             VALUES (?, ?, ?, ?)
             `
-          )
-          .run(
-            teamA.id, teamB.id, teamA.score, teamB.score,
-            error => { if (error) reject(error) }
-          );
-        statement.finalize();
+        )
+        .run(teamA.id, teamB.id, teamA.score, teamB.score, error => {
+          if (error) reject(error);
+        });
+      statement.finalize();
 
-        statement = db
-          .prepare('UPDATE team SET rating = (?) WHERE id = (?)')
-          .run(teamA.newRating, teamA.id, error => { if (error) reject(error) });
-        statement.finalize();
+      statement = db
+        .prepare("UPDATE team SET rating = (?) WHERE id = (?)")
+        .run(teamA.newRating, teamA.id, error => {
+          if (error) reject(error);
+        });
+      statement.finalize();
 
-        statement = db
-          .prepare('UPDATE team SET rating = (?) WHERE id = (?)')
-          .run(teamB.newRating, teamB.id, error => error ? reject(error) : resolve());
-        statement.finalize();
-      }
-    );
+      statement = db
+        .prepare("UPDATE team SET rating = (?) WHERE id = (?)")
+        .run(teamB.newRating, teamB.id, error =>
+          error ? reject(error) : resolve()
+        );
+      statement.finalize();
+    });
   }
 
   getLatestGames(n) {
@@ -167,7 +176,7 @@ class Database {
         LIMIT ?
         `,
         n,
-        (error, rows) => error ? reject(error) : resolve(rows)
+        (error, rows) => (error ? reject(error) : resolve(rows))
       )
     );
   }
@@ -192,8 +201,10 @@ class Database {
           ON g.player_a_id = p.id OR g.player_b_id = p.id
         WHERE p.id = ?
         `,
-        playerId, playerId, playerId,
-        (error, row) => error ? reject(error) : resolve(row)
+        playerId,
+        playerId,
+        playerId,
+        (error, row) => (error ? reject(error) : resolve(row))
       )
     );
   }
@@ -211,8 +222,9 @@ class Database {
         WHERE player_a_id = ? OR player_b_id = ?
         ORDER BY created_timestamp ASC
         `,
-        playerId, playerId,
-        (error, rows) => error ? reject(error) : resolve(rows)
+        playerId,
+        playerId,
+        (error, rows) => (error ? reject(error) : resolve(rows))
       )
     );
   }
@@ -227,14 +239,14 @@ class Database {
 
   queries(...callbacks) {
     const db = new sqlite3.Database(this.databaseName);
-    const promises = callbacks.map(callback =>
-      new Promise((resolve, reject) => callback(db, resolve, reject)));
-    return Promise
-      .all(promises)
-      .then(() => {
-        db.close();
-        return Promise.resolve();
-      });
+    const promises = callbacks.map(
+      callback =>
+        new Promise((resolve, reject) => callback(db, resolve, reject))
+    );
+    return Promise.all(promises).then(() => {
+      db.close();
+      return Promise.resolve();
+    });
   }
 }
 
