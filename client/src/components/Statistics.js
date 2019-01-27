@@ -1,6 +1,6 @@
-import React, { PureComponent } from 'react';
-import Api from '../Api';
-import './Statistics.css';
+import React, { PureComponent } from "react";
+import Api from "../Api";
+import "./Statistics.css";
 
 export default class Statistics extends PureComponent {
   constructor() {
@@ -9,8 +9,9 @@ export default class Statistics extends PureComponent {
   }
 
   componentDidMount() {
-    Api.getPlayerStatistics(this.props.playerId)
-      .then(statistics => this.setState(statistics));
+    Api.getPlayerStatistics(this.props.playerId).then(statistics =>
+      this.setState(statistics)
+    );
   }
 
   render() {

@@ -1,8 +1,8 @@
 export default class Api {
   static addPlayer(name) {
-    return fetch('/api/player', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    return fetch("/api/player", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name: name
       })
@@ -10,9 +10,9 @@ export default class Api {
   }
 
   static addGame(type, playerAId, playerAScore, playerBId, playerBScore) {
-    return fetch('/api/' + type, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    return fetch("/api/" + type, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         a: {
           id: playerAId,
@@ -27,9 +27,9 @@ export default class Api {
   }
 
   static addTeam(name, playerAId, playerBId) {
-    return fetch('/api/team', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    return fetch("/api/team", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name: name,
         playerAId: playerAId,
@@ -39,26 +39,26 @@ export default class Api {
   }
 
   static getSingles() {
-    return fetch('/api/singles', {
-      method: 'GET'
+    return fetch("/api/singles", {
+      method: "GET"
     }).then(response => response.json());
   }
 
   static getPlayers() {
-    return fetch('/api/players', {
-      method: 'GET'
+    return fetch("/api/players", {
+      method: "GET"
     }).then(response => response.json());
   }
 
   static getTeams() {
-    return fetch('/api/teams', {
-      method: 'GET'
+    return fetch("/api/teams", {
+      method: "GET"
     }).then(response => response.json());
   }
 
   static getPlayerStatistics(playerId) {
-    return fetch('/api/player/' + playerId, {
-      method: 'GET',
+    return fetch("/api/player/" + playerId, {
+      method: "GET"
     }).then(response => response.json());
   }
 }

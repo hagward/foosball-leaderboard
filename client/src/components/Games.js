@@ -1,5 +1,5 @@
-import React, { PureComponent } from 'react';
-import moment from 'moment';
+import React, { PureComponent } from "react";
+import moment from "moment";
 
 export default class Games extends PureComponent {
   render() {
@@ -24,10 +24,12 @@ export default class Games extends PureComponent {
                   <td>{this.capitalizeWord(game.type)}</td>
                   <td>{game.a_name}</td>
                   <td>{game.b_name}</td>
-                  <td>{game.a_score}:{game.b_score}</td>
-                  <td title={date.local().format('LTS')}>{date.fromNow()}</td>
+                  <td>
+                    {game.a_score}:{game.b_score}
+                  </td>
+                  <td title={date.local().format("LTS")}>{date.fromNow()}</td>
                 </tr>
-              )
+              );
             })}
           </tbody>
         </table>

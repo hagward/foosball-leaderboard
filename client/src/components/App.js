@@ -1,10 +1,10 @@
-import React, { PureComponent } from 'react';
-import AddPlayer from './AddPlayer';
-import AddTeam from './AddTeam';
-import Games from './Games';
-import Leaderboard from './Leaderboard';
-import RegisterGame from './RegisterGame';
-import Api from '../Api';
+import React, { PureComponent } from "react";
+import AddPlayer from "./AddPlayer";
+import AddTeam from "./AddTeam";
+import Games from "./Games";
+import Leaderboard from "./Leaderboard";
+import RegisterGame from "./RegisterGame";
+import Api from "../Api";
 
 export default class App extends PureComponent {
   constructor() {
@@ -27,16 +27,15 @@ export default class App extends PureComponent {
     this.fetchGames();
     this.fetchPlayers();
     this.fetchTeams();
-  }
+  };
 
   fetchGames = () => {
-    Api.getSingles()
-      .then(games => this.setState({ games: games }));
-  }
+    Api.getSingles().then(games => this.setState({ games: games }));
+  };
 
   fetchPlayers = () => {
-    Api.getPlayers()
-      .then(players => this.setState({
+    Api.getPlayers().then(players =>
+      this.setState({
         players: players.slice().sort((a, b) => {
           const nameA = a.name.toUpperCase();
           const nameB = b.name.toUpperCase();
@@ -49,12 +48,13 @@ export default class App extends PureComponent {
           }
         }),
         leaderboardSingles: players.slice().sort((a, b) => b.rating - a.rating)
-      }));
-  }
+      })
+    );
+  };
 
   fetchTeams = () => {
-    Api.getTeams()
-      .then(teams => this.setState({
+    Api.getTeams().then(teams =>
+      this.setState({
         teams: teams.slice().sort((a, b) => {
           const nameA = a.name.toUpperCase();
           const nameB = b.name.toUpperCase();
@@ -67,27 +67,42 @@ export default class App extends PureComponent {
           }
         }),
         leaderboardDoubles: teams.slice().sort((a, b) => b.rating - a.rating)
-      }));
-  }
+      })
+    );
+  };
 
   render() {
     return (
       <div className="container">
         <div className="row">
           <div className="column">
-            <Leaderboard type="singles" leaderboard={this.state.leaderboardSingles} />
+            <Leaderboard
+              type="singles"
+              leaderboard={this.state.leaderboardSingles}
+            />
           </div>
           <div className="column">
-            <Leaderboard type="doubles" leaderboard={this.state.leaderboardDoubles} />
+            <Leaderboard
+              type="doubles"
+              leaderboard={this.state.leaderboardDoubles}
+            />
           </div>
         </div>
         <Games games={this.state.games} />
         <div className="row">
           <div className="column">
-            <RegisterGame type="singles" players={this.state.players} callback={this.fetchAll} />
+            <RegisterGame
+              type="singles"
+              players={this.state.players}
+              callback={this.fetchAll}
+            />
           </div>
           <div className="column">
-            <RegisterGame type="doubles" players={this.state.teams} callback={this.fetchAll} />
+            <RegisterGame
+              type="doubles"
+              players={this.state.teams}
+              callback={this.fetchAll}
+            />
           </div>
         </div>
         <div className="row">
