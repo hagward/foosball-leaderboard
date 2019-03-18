@@ -14,30 +14,19 @@ export default function App() {
   const [teams, setTeams] = useState([]);
 
   useEffect(() => {
-    fetchAll();
+    fetchDashboard();
   }, []);
 
-  const fetchAll = () => {
-    fetchGames();
-    fetchPlayers();
-    fetchTeams();
-  };
-
-  const fetchGames = () => Api.getSingles().then(setGames);
-
-  const fetchPlayers = () =>
-    Api.getPlayers().then(players => {
+  const fetchDashboard = () =>
+    Api.getDashboard().then(({ games, players, teams }) => {
+      setGames(games);
+      setLeaderboardDoubles(sortByRating(teams));
+      setLeaderboardSingles(sortByRating(players));
       setPlayers(players);
-      setLeaderboardSingles(
-        players.slice().sort((a, b) => b.rating - a.rating)
-      );
+      setTeams(teams);
     });
 
-  const fetchTeams = () =>
-    Api.getTeams().then(teams => {
-      setTeams(teams);
-      setLeaderboardDoubles(teams.slice().sort((a, b) => b.rating - a.rating));
-    });
+  const sortByRating = list => list.slice().sort((a, b) => b.rating - a.rating);
 
   return (
     <div className="container">
@@ -52,18 +41,26 @@ export default function App() {
       <Games games={games} />
       <div className="row">
         <div className="column">
-          <RegisterGame type="singles" players={players} callback={fetchAll} />
+          <RegisterGame
+            type="singles"
+            players={players}
+            callback={fetchDashboard}
+          />
         </div>
         <div className="column">
-          <RegisterGame type="doubles" players={teams} callback={fetchAll} />
+          <RegisterGame
+            type="doubles"
+            players={teams}
+            callback={fetchDashboard}
+          />
         </div>
       </div>
       <div className="row">
         <div className="column">
-          <AddPlayer callback={fetchAll} />
+          <AddPlayer callback={fetchDashboard} />
         </div>
         <div className="column">
-          <AddTeam players={players} callback={fetchAll} />
+          <AddTeam players={players} callback={fetchDashboard} />
         </div>
       </div>
     </div>

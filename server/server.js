@@ -16,6 +16,19 @@ app.use((req, res, next) => {
 
 app.use("/", express.static("../client/build"));
 
+app.get("/api/dashboard", (req, res) => {
+  Promise.all([
+    db.getLatestGames(5),
+    db.getPlayers(),
+    db.getTeams()
+  ])
+  .then(([games, players, teams]) => res.send({games, players, teams}))
+  .catch(error => {
+    console.log(error);
+    res.sendStatus(400);
+  });
+});
+
 app.get("/api/players", (req, res) => {
   db.getPlayers()
     .then(players => res.send(players))

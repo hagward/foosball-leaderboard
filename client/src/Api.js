@@ -24,6 +24,10 @@ export default class Api {
     });
   }
 
+  static getDashboard() {
+    return get("/api/dashboard");
+  }
+
   static getSingles() {
     return get("/api/singles");
   }
