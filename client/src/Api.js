@@ -1,64 +1,54 @@
 export default class Api {
   static addPlayer(name) {
-    return fetch("/api/player", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: name
-      })
-    });
+    return post("/api/player", { name });
   }
 
   static addGame(type, playerAId, playerAScore, playerBId, playerBScore) {
-    return fetch("/api/" + type, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        a: {
-          id: playerAId,
-          score: playerAScore
-        },
-        b: {
-          id: playerBId,
-          score: playerBScore
-        }
-      })
+    return post(`/api/${type}`, {
+      a: {
+        id: playerAId,
+        score: playerAScore
+      },
+      b: {
+        id: playerBId,
+        score: playerBScore
+      }
     });
   }
 
   static addTeam(name, playerAId, playerBId) {
-    return fetch("/api/team", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: name,
-        playerAId: playerAId,
-        playerBId: playerBId
-      })
+    return post("/api/team", {
+      name: name,
+      playerAId: playerAId,
+      playerBId: playerBId
     });
   }
 
   static getSingles() {
-    return fetch("/api/singles", {
-      method: "GET"
-    }).then(response => response.json());
+    return get("/api/singles");
   }
 
   static getPlayers() {
-    return fetch("/api/players", {
-      method: "GET"
-    }).then(response => response.json());
+    return get("/api/players");
   }
 
   static getTeams() {
-    return fetch("/api/teams", {
-      method: "GET"
-    }).then(response => response.json());
+    return get("/api/teams");
   }
 
   static getPlayerStatistics(playerId) {
-    return fetch("/api/player/" + playerId, {
-      method: "GET"
-    }).then(response => response.json());
+    return get(`/api/player/${playerId}`);
   }
+}
+
+function get(url) {
+  return fetch(url).then(response => response.json());
+}
+
+function post(url, data) {
+  return fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  });
 }
