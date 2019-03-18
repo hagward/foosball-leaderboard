@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Select from "./Select";
 import Api from "../Api";
 
 export default function RegisterGame({ callback, players, type }) {
@@ -13,21 +14,6 @@ export default function RegisterGame({ callback, players, type }) {
 
   const playerText = type === "doubles" ? "team" : "player";
   const playerTextCapitalized = type === "doubles" ? "Team" : "Player";
-
-  const renderPlayerSelect = (id, name, value) => {
-    return (
-      <select id={id} name={name} value={value} onChange={handlePlayerChange}>
-        <option value="" disabled>
-          Select {playerText}
-        </option>
-        {players.map(player => (
-          <option key={player.id} value={player.id}>
-            {player.name}
-          </option>
-        ))}
-      </select>
-    );
-  };
 
   const renderScoreInput = (id, name, value) => {
     return (
@@ -79,24 +65,26 @@ export default function RegisterGame({ callback, players, type }) {
         <fieldset>
           <div className="row">
             <div className="column">
-              <label htmlFor="singles-player-a-select">
-                {playerTextCapitalized} A
-              </label>
-              {renderPlayerSelect(
-                "singles-player-a-select",
-                "playerA",
-                playerIds.playerA
-              )}
+              <Select
+                defaultOption={`Select ${playerText}`}
+                id="singles-player-a-select"
+                items={players}
+                label={`${playerTextCapitalized} A`}
+                name="playerA"
+                onChange={handlePlayerChange}
+                value={playerIds.playerA}
+              />
             </div>
             <div className="column">
-              <label htmlFor="singles-player-b-select">
-                {playerTextCapitalized} B
-              </label>
-              {renderPlayerSelect(
-                "singles-player-b-select",
-                "playerB",
-                playerIds.playerB
-              )}
+              <Select
+                defaultOption={`Select ${playerText}`}
+                id="singles-player-b-select"
+                items={players}
+                label={`${playerTextCapitalized} B`}
+                name="playerB"
+                onChange={handlePlayerChange}
+                value={playerIds.playerB}
+              />
             </div>
           </div>
           <div className="row">

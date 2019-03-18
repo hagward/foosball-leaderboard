@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Select from "./Select";
 import Api from "../Api";
 
 export default function AddTeam({ players, callback }) {
@@ -7,19 +8,6 @@ export default function AddTeam({ players, callback }) {
     playerA: "",
     playerB: ""
   });
-
-  const renderPlayerSelect = (id, name, value) => (
-    <select id={id} name={name} value={value} onChange={handlePlayerChange}>
-      <option value="" disabled>
-        Select player
-      </option>
-      {players.map(player => (
-        <option key={player.id} value={player.id}>
-          {player.name}
-        </option>
-      ))}
-    </select>
-  );
 
   const handleClick = event => {
     event.preventDefault();
@@ -56,20 +44,26 @@ export default function AddTeam({ players, callback }) {
               />
             </div>
             <div className="column">
-              <label htmlFor="team-player-a-select">Player A</label>
-              {renderPlayerSelect(
-                "team-player-a-select",
-                "playerA",
-                selectedIds.playerA
-              )}
+              <Select
+                defaultOption="Select player"
+                id="team-player-a-select"
+                items={players}
+                label="Player A"
+                name="playerA"
+                onChange={handlePlayerChange}
+                value={selectedIds.playerA}
+              />
             </div>
             <div className="column">
-              <label htmlFor="team-player-b-select">Player B</label>
-              {renderPlayerSelect(
-                "team-player-b-select",
-                "playerB",
-                selectedIds.playerB
-              )}
+              <Select
+                defaultOption="Select player"
+                id="team-player-b-select"
+                items={players}
+                label="Player B"
+                name="playerB"
+                onChange={handlePlayerChange}
+                value={selectedIds.playerB}
+              />
             </div>
           </div>
           <input
