@@ -1,53 +1,17 @@
-import React, { PureComponent } from "react";
+import React, { useState } from "react";
 import Modal from "./Modal";
 import Statistics from "./Statistics";
 import "./Leaderboard.css";
 
-export default class Leaderboard extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedPlayerId: null
-    };
-  }
+export default function Leaderboard({ leaderboard, type }) {
+  const [selectedPlayerId, setSelectedPlayerId] = useState(null);
 
-  render() {
-    return (
-      <section className="leaderboard">
-        <h2>Leaderboard, {this.props.type}</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Rank</th>
-              <th>Name</th>
-              <th>Rating</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.props.leaderboard.map((player, index) => (
-              <tr key={player.id}>
-                <td>{index + 1}</td>
-                <td>{this.renderPlayerLink(player.id, player.name)}</td>
-                <td>{player.rating}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {this.state.selectedPlayerId && (
-          <Modal onClose={() => this.setState({ selectedPlayerId: null })}>
-            <Statistics playerId={this.state.selectedPlayerId} />
-          </Modal>
-        )}
-      </section>
-    );
-  }
-
-  renderPlayerLink(playerId, playerName) {
-    if (this.props.type === "singles") {
+  const renderPlayerLink = (playerId, playerName) => {
+    if (type === "singles") {
       return (
         <a
           className="leaderboard__link"
-          onClick={() => this.setState({ selectedPlayerId: playerId })}
+          onClick={() => setSelectedPlayerId(playerId)}
         >
           {playerName}
         </a>
@@ -55,5 +19,34 @@ export default class Leaderboard extends PureComponent {
     } else {
       return playerName;
     }
-  }
+  };
+
+  return (
+    <section className="leaderboard">
+      <h2>Leaderboard, {type}</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Rating</th>
+          </tr>
+        </thead>
+        <tbody>
+          {leaderboard.map((player, index) => (
+            <tr key={player.id}>
+              <td>{index + 1}</td>
+              <td>{renderPlayerLink(player.id, player.name)}</td>
+              <td>{player.rating}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {selectedPlayerId && (
+        <Modal onClose={() => setSelectedPlayerId(null)}>
+          <Statistics playerId={selectedPlayerId} />
+        </Modal>
+      )}
+    </section>
+  );
 }

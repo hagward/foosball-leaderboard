@@ -1,34 +1,32 @@
-import React, { PureComponent } from "react";
+import React, { useEffect, useState } from "react";
 import Api from "../Api";
 import "./Statistics.css";
 
-export default class Statistics extends PureComponent {
-  constructor() {
-    super();
-    this.state = {};
-  }
+export default function Statistics({ playerId }) {
+  const [stats, setStats] = useState({
+    games: 0,
+    name: "",
+    rating: 0,
+    wins: 0
+  });
 
-  componentDidMount() {
-    Api.getPlayerStatistics(this.props.playerId).then(statistics =>
-      this.setState(statistics)
-    );
-  }
+  useEffect(() => {
+    Api.getPlayerStatistics(playerId).then(statistics => setStats(statistics));
+  }, []);
 
-  render() {
-    return (
-      <section className="statistics">
-        <h2>{this.state.name}</h2>
-        <ul className="statistics__list">
-          <li>Rating: {this.state.rating}</li>
-          <li>Games played: {this.state.games}</li>
-          <li>Win percentage: {this.winRatioPercent()}%</li>
-        </ul>
-      </section>
-    );
-  }
-
-  winRatioPercent() {
-    const winRatio = this.state.wins / Math.max(this.state.games, 1);
+  const winRatioPercent = () => {
+    const winRatio = stats.wins / Math.max(stats.games, 1);
     return Number(winRatio * 100).toFixed(1);
-  }
+  };
+
+  return (
+    <section className="statistics">
+      <h2>{stats.name}</h2>
+      <ul className="statistics__list">
+        <li>Rating: {stats.rating}</li>
+        <li>Games played: {stats.games}</li>
+        <li>Win percentage: {winRatioPercent()}%</li>
+      </ul>
+    </section>
+  );
 }

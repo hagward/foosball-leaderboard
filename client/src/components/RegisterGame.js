@@ -1,91 +1,26 @@
-import React, { PureComponent } from "react";
+import React, { useState } from "react";
 import Api from "../Api";
 
-export default class RegisterGame extends PureComponent {
-  constructor(props) {
-    super(props);
+export default function RegisterGame({ callback, players, type }) {
+  const [playerIds, setPlayerIds] = useState({
+    playerA: "",
+    playerB: ""
+  });
+  const [scores, setScores] = useState({
+    playerA: "",
+    playerB: ""
+  });
 
-    this.state = {
-      playerAId: "",
-      playerBId: "",
-      playerAScore: "",
-      playerBScore: ""
-    };
+  const playerText = type === "doubles" ? "team" : "player";
+  const playerTextCapitalized = type === "doubles" ? "Team" : "Player";
 
-    this.playerText = this.props.type === "doubles" ? "team" : "player";
-    this.playerTextCapitalized =
-      this.props.type === "doubles" ? "Team" : "Player";
-  }
-
-  render() {
+  const renderPlayerSelect = (id, name, value) => {
     return (
-      <section>
-        <h2>Register game, {this.props.type}</h2>
-        <form>
-          <fieldset>
-            <div className="row">
-              <div className="column">
-                <label htmlFor="singles-player-a-select">
-                  {this.playerTextCapitalized} A
-                </label>
-                {this.renderPlayerSelect(
-                  "singles-player-a-select",
-                  "playerAId",
-                  this.state.playerAId
-                )}
-              </div>
-              <div className="column">
-                <label htmlFor="singles-player-b-select">
-                  {this.playerTextCapitalized} B
-                </label>
-                {this.renderPlayerSelect(
-                  "singles-player-b-select",
-                  "playerBId",
-                  this.state.playerBId
-                )}
-              </div>
-            </div>
-            <div className="row">
-              <div className="column">
-                <label htmlFor="singles-player-a-score">
-                  {this.playerTextCapitalized} A score
-                </label>
-                {this.renderScoreInput(
-                  "singles-player-a-score",
-                  "playerAScore",
-                  this.state.playerAScore
-                )}
-              </div>
-              <div className="column">
-                <label htmlFor="singles-player-b-score">
-                  {this.playerTextCapitalized} B score
-                </label>
-                {this.renderScoreInput(
-                  "singles-player-b-score",
-                  "playerBScore",
-                  this.state.playerBScore
-                )}
-              </div>
-            </div>
-            <input
-              className="button-primary"
-              value="Register game"
-              type="submit"
-              onClick={this.registerGame}
-            />
-          </fieldset>
-        </form>
-      </section>
-    );
-  }
-
-  renderPlayerSelect = (id, name, value) => {
-    return (
-      <select id={id} name={name} value={value} onChange={this.handleChange}>
+      <select id={id} name={name} value={value} onChange={handlePlayerChange}>
         <option value="" disabled>
-          Select {this.playerText}
+          Select {playerText}
         </option>
-        {this.props.players.map(player => (
+        {players.map(player => (
           <option key={player.id} value={player.id}>
             {player.name}
           </option>
@@ -94,7 +29,7 @@ export default class RegisterGame extends PureComponent {
     );
   };
 
-  renderScoreInput = (id, name, value) => {
+  const renderScoreInput = (id, name, value) => {
     return (
       <input
         id={id}
@@ -104,31 +39,96 @@ export default class RegisterGame extends PureComponent {
         min="0"
         max="10"
         value={value}
-        onChange={this.handleChange}
+        onChange={handleScoreChange}
       />
     );
   };
 
-  handleChange = event => {
+  const handlePlayerChange = event => {
     const target = event.target;
-    this.setState({ [target.name]: target.value });
+    setPlayerIds({ ...playerIds, [target.name]: target.value });
   };
 
-  registerGame = event => {
+  const handleScoreChange = event => {
+    const target = event.target;
+    setScores({ ...scores, [target.name]: target.value });
+  };
+
+  const registerGame = event => {
     event.preventDefault();
 
     Api.addGame(
-      this.props.type,
-      this.state.playerAId,
-      this.state.playerAScore,
-      this.state.playerBId,
-      this.state.playerBScore
-    ).then(response => {
-      this.setState({
-        playerAScore: "",
-        playerBScore: ""
+      type,
+      playerIds.playerA,
+      scores.playerA,
+      playerIds.playerB,
+      scores.playerB
+    ).then(() => {
+      setScores({
+        playerA: "",
+        playerB: ""
       });
-      this.props.callback();
+      callback();
     });
   };
+
+  return (
+    <section>
+      <h2>Register game, {type}</h2>
+      <form>
+        <fieldset>
+          <div className="row">
+            <div className="column">
+              <label htmlFor="singles-player-a-select">
+                {playerTextCapitalized} A
+              </label>
+              {renderPlayerSelect(
+                "singles-player-a-select",
+                "playerA",
+                playerIds.playerA
+              )}
+            </div>
+            <div className="column">
+              <label htmlFor="singles-player-b-select">
+                {playerTextCapitalized} B
+              </label>
+              {renderPlayerSelect(
+                "singles-player-b-select",
+                "playerB",
+                playerIds.playerB
+              )}
+            </div>
+          </div>
+          <div className="row">
+            <div className="column">
+              <label htmlFor="singles-player-a-score">
+                {playerTextCapitalized} A score
+              </label>
+              {renderScoreInput(
+                "singles-player-a-score",
+                "playerA",
+                scores.playerA
+              )}
+            </div>
+            <div className="column">
+              <label htmlFor="singles-player-b-score">
+                {playerTextCapitalized} B score
+              </label>
+              {renderScoreInput(
+                "singles-player-b-score",
+                "playerB",
+                scores.playerB
+              )}
+            </div>
+          </div>
+          <input
+            className="button-primary"
+            value="Register game"
+            type="submit"
+            onClick={registerGame}
+          />
+        </fieldset>
+      </form>
+    </section>
+  );
 }
