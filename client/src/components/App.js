@@ -27,19 +27,7 @@ export default function App() {
 
   const fetchPlayers = () =>
     Api.getPlayers().then(players => {
-      setPlayers(
-        players.slice().sort((a, b) => {
-          const nameA = a.name.toUpperCase();
-          const nameB = b.name.toUpperCase();
-          if (nameA < nameB) {
-            return -1;
-          } else if (nameA > nameB) {
-            return 1;
-          } else {
-            return 0;
-          }
-        })
-      );
+      setPlayers(players);
       setLeaderboardSingles(
         players.slice().sort((a, b) => b.rating - a.rating)
       );
@@ -47,19 +35,7 @@ export default function App() {
 
   const fetchTeams = () =>
     Api.getTeams().then(teams => {
-      setTeams(
-        teams.slice().sort((a, b) => {
-          const nameA = a.name.toUpperCase();
-          const nameB = b.name.toUpperCase();
-          if (nameA < nameB) {
-            return -1;
-          } else if (nameA > nameB) {
-            return 1;
-          } else {
-            return 0;
-          }
-        })
-      );
+      setTeams(teams);
       setLeaderboardDoubles(teams.slice().sort((a, b) => b.rating - a.rating));
     });
 

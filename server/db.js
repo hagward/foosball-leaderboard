@@ -61,7 +61,7 @@ class Database {
 
   getPlayers() {
     return this.query((db, resolve, reject) =>
-      db.all("SELECT id, name, rating FROM player", (error, rows) =>
+      db.all("SELECT id, name, rating FROM player ORDER BY name", (error, rows) =>
         error ? reject(error) : resolve(rows)
       )
     );
@@ -69,7 +69,7 @@ class Database {
 
   getTeams() {
     return this.query((db, resolve, reject) =>
-      db.all("SELECT id, name, rating FROM team", (error, rows) =>
+      db.all("SELECT id, name, rating FROM team ORDER BY name", (error, rows) =>
         error ? reject(error) : resolve(rows)
       )
     );
