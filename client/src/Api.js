@@ -1,10 +1,8 @@
 export default class Api {
-  static addPlayer(name) {
-    return post("/api/player", { name });
-  }
+  static addPlayer = name => post("/api/player", { name });
 
-  static addGame(type, playerAId, playerAScore, playerBId, playerBScore) {
-    return post(`/api/${type}`, {
+  static addGame = (type, playerAId, playerAScore, playerBId, playerBScore) =>
+    post(`/api/${type}`, {
       a: {
         id: playerAId,
         score: playerAScore
@@ -14,35 +12,23 @@ export default class Api {
         score: playerBScore
       }
     });
-  }
 
-  static addTeam(name, playerAId, playerBId) {
-    return post("/api/team", {
+  static addTeam = (name, playerAId, playerBId) =>
+    post("/api/team", {
       name: name,
       playerAId: playerAId,
       playerBId: playerBId
     });
-  }
 
-  static getDashboard() {
-    return get("/api/dashboard");
-  }
+  static getDashboard = () => get("/api/dashboard");
 
-  static getSingles() {
-    return get("/api/singles");
-  }
+  static getSingles = () => get("/api/singles");
 
-  static getPlayers() {
-    return get("/api/players");
-  }
+  static getPlayers = () => get("/api/players");
 
-  static getTeams() {
-    return get("/api/teams");
-  }
+  static getTeams = () => get("/api/teams");
 
-  static getPlayerStatistics(playerId) {
-    return get(`/api/player/${playerId}`);
-  }
+  static getPlayerStatistics = playerId => get(`/api/player/${playerId}`);
 }
 
 function get(url) {
