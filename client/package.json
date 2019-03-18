@@ -6,9 +6,9 @@
   "dependencies": {
     "milligram": "^1.3.0",
     "moment": "^2.24.0",
-    "react": "^16.7.0",
-    "react-dom": "^16.7.0",
-    "react-scripts": "2.1.3"
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
+    "react-scripts": "2.1.8"
   },
   "scripts": {
     "start": "react-scripts start",
